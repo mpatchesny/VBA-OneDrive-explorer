@@ -1,10 +1,4 @@
 /ignore
-/bin/Dane
-/bin/*.json
 open_bin.bat
 sqlite.bat
-*.db
-*.py
 ~$*.xlsm
-info.txt
-log.txt
