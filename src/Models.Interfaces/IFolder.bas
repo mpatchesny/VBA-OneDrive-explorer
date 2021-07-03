@@ -17,6 +17,11 @@ End Property
 Public Property Get Id() As String
 End Property
 
-Public Sub Download(ByVal saveToPath As String)
-End Sub
+Public Property Get Name() As String
+End Property
 
+Public Property Get ChildrenCount() As Long
+End Property
+
+Public Function GetChildren() As Collection
+End Function
