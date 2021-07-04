@@ -16,12 +16,31 @@ Attribute VB_Exposed = False
 '@Folder("Views")
 Implements IExplorerView
 
+Private Type TFields
+    IsCancelled As Boolean
+End Type
+Private this As TFields
+
+Public Property Get IsCancelled() As Boolean
+    IsCancelled = False
+End Property
+Private Property Get IExplorerView_IsCancelled() As Boolean
+    IExplorerView_IsCancelled = IsCancelled
+End Property
+Private Property Let IsCancelled(ByVal value As Boolean)
+    this.IsCancelled = value
+End Property
+
 Public Property Get Self() As ExplorerView
     Set Self = Me
 End Property
 Private Property Get IExplorerView_Self() As IExplorerView
     Set IExplorerView_Self = Self
 End Property
+
+Public Sub Init(ByVal title As String)
+    Me.Caption = title
+End Sub
 
 Public Sub Display()
     Me.Display
@@ -37,10 +56,31 @@ Private Sub IExplorerView_HideView()
     HideView
 End Sub
 
+Private Sub OkButton_Click()
+    OK
+End Sub
+
+Private Sub UserForm_QueryClose(cCancel As Integer, CloseMode As Integer)
+    If Not IsCancelled Then
+        cCancel = True
+        Cancel
+    End If
+End Sub
+
 Private Sub ListView_DblClick()
     ' TODO
 End Sub
 
 Private Sub UserForm_Resize()
     ' TODO
+End Sub
+
+Public Sub OK()
+    IsCancelled = False
+    HideView
+End Sub
+
+Public Sub Cancel()
+    IsCancelled = True
+    HideView
 End Sub
