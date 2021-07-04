@@ -11,5 +11,8 @@ Attribute VB_Exposed = False
 '@Interface
 Option Explicit
 
+Public Function GetItem(ByVal path As String, Optional ByRef parent As IDriveItem) As IDriveItem
+End Function
+
 Public Function GetItems(ByRef parent As IDriveItem) As Collection
 End Function
