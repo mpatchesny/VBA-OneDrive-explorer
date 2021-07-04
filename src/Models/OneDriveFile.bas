@@ -19,7 +19,8 @@ Private Type TFields
     LastModifiedTime As Date
     CreatedTime As Date
     Size As Long
-    json As String
+    parent As IDriveItem
+    path As String
 End Type
 Private this As TFields
 
@@ -32,12 +33,18 @@ End Property
 Private Property Get IFile_Id() As String
     IFile_Id = Id
 End Property
+Private Property Let Id(ByVal value As String)
+    this.Id = value
+End Property
 
 Public Property Get Name() As String
     Name = this.Name
 End Property
 Private Property Get IFile_Name() As String
     IFile_Name = Name
+End Property
+Private Property Let Name(ByVal value As String)
+    this.Name = value
 End Property
 
 Private Property Get CreatedTime() As Date
@@ -46,6 +53,9 @@ End Property
 Private Property Get IFile_CreatedTime() As Date
     IFile_CreatedTime = CreatedTime
 End Property
+Private Property Let CreatedTime(ByVal value As Date)
+    this.CreatedTime = value
+End Property
 
 Public Property Get LastModifiedTime() As Date
     LastModifiedTime = this.LastModifiedTime
@@ -53,12 +63,18 @@ End Property
 Private Property Get IFile_LastModifiedTime() As Date
     IFile_LastModifiedTime = LastModifiedTime
 End Property
+Private Property Let LastModifiedTime(ByVal value As Date)
+    this.LastModifiedTime = value
+End Property
 
 Public Property Get Size() As Long
     Size = this.Size
 End Property
 Private Property Get IFile_Size() As Long
     IFile_Size = Size
+End Property
+Private Property Let Size(ByVal value As Long)
+    this.Size = value
 End Property
 
 Public Property Get IsFile() As Boolean
@@ -75,12 +91,30 @@ Private Property Get IDriveItem_IsFolder() As Boolean
     IDriveItem_IsFolder = IsFolder
 End Property
 
-Public Property Get Parent() As IDriveItem
-    ' TODO
-    Set Parent = Nothing
+Public Property Get parent() As IDriveItem
+    Set parent = this.parent
 End Property
 Private Property Get IDriveItem_Parent() As IDriveItem
-    Set IDriveItem_Parent = Parent
+    Set IDriveItem_Parent = parent
+End Property
+Private Property Let parent(ByVal value As IDriveItem)
+    Set this.parent = value
+End Property
+
+Public Property Get path() As String
+    path = this.path
+End Property
+Private Property Get IFile_Path() As String
+    IFile_Path = path
+End Property
+Private Property Get IDriveItem_Path() As String
+    IDriveItem_Path = path
+End Property
+Private Property Get IFolder_Path() As String
+    IFolder_Path = path
+End Property
+Private Property Let path(ByVal value As String)
+    this.path = value
 End Property
 
 Public Property Get Self() As OneDriveFile
@@ -93,9 +127,19 @@ Private Property Get IFile_Self() As IFile
     Set IFile_Self = Self
 End Property
 
-
-
-
-
-
+Public Sub Init(ByVal cId As String, _
+                ByVal cName As String, _
+                ByVal cLastModifiedTime, _
+                ByVal cCreatedTime, _
+                ByVal cSize As Long, _
+                ByRef cParent As IDriveItem, _
+                ByVal cPath As String)
+    Id = cId
+    Name = cName
+    LastModifiedTime = cLastModifiedTime
+    CreatedTime = cCreatedTime
+    parent = cParent
+    Size = cSize
+    path = cPath
+End Sub
 

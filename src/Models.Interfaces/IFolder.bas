@@ -25,3 +25,7 @@ End Property
 
 Public Function GetChildren() As Collection
 End Function
+
+Public Property Get path() As String
+End Property
+

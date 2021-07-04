@@ -14,7 +14,7 @@ Option Explicit
 Public Property Get Self() As IDriveItem
 End Property
 
-Public Property Get Parent() As IDriveItem
+Public Property Get parent() As IDriveItem
 End Property
 
 Public Property Get Id() As String
@@ -26,3 +26,5 @@ End Property
 Public Property Get IsFolder() As Boolean
 End Property
 
+Public Property Get path() As String
+End Property

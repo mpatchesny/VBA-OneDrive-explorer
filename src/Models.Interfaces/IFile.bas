@@ -28,3 +28,7 @@ End Property
 
 Public Property Get LastModifiedTime() As Date
 End Property
+
+Public Property Get path() As String
+End Property
+
