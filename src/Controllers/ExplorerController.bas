@@ -17,24 +17,9 @@ Private Type TFields
     Model As IExplorerViewModel
     IsDisplayed As Boolean
     IsCancelled As Boolean
-    CurrentItem As IDriveItem
     SelectedItems As Collection
 End Type
 Private this As TFields
-
-Public Property Get View() As IExplorerView
-    Set View = this.View
-End Property
-Private Property Let View(ByRef value As IExplorerView)
-    Set this.View = value
-End Property
-
-Public Property Get Model() As IExplorerViewModel
-    Set Model = this.Model
-End Property
-Private Property Let Model(ByRef value As IExplorerViewModel)
-    Set this.Model = value
-End Property
 
 Public Property Get IsDisplayed() As Boolean
     IsDisplayed = this.IsDisplayed
@@ -57,7 +42,7 @@ Private Property Let IsCancelled(ByVal value As Boolean)
 End Property
 
 Public Property Get SelectedItems() As Collection
-    Set SelectedItems = Model.SelectedItems
+    Set SelectedItems = this.Model.SelectedItems
 End Property
 Private Property Get IExplorerController_SelectedItems() As Collection
     Set IExplorerController_SelectedItems = SelectedItems
@@ -74,8 +59,8 @@ Private Property Get IExplorerController_Self() As IExplorerController
 End Property
 
 Public Sub Init(ByRef cView As IExplorerView, ByRef cModel As Object)
-    View = cView
-    Model = cModel
+    Set this.View = cView
+    Set this.Model = cModel
 End Sub
 
 Public Sub Display()
@@ -85,8 +70,8 @@ Public Sub Display()
     Self = TypeName(Me) & ".Self"
     
     IsDisplayed = True
-    View.Display
-    IsCancelled = View.IsCancelled
+    this.View.Display
+    IsCancelled = this.View.IsCancelled
     IsDisplayed = False
     Exit Sub
     
