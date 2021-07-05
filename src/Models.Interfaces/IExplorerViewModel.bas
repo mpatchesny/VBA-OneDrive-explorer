@@ -14,8 +14,20 @@ Option Explicit
 Public Property Get Self() As IExplorerViewModel
 End Property
 
-Public Property Get Items() As Collection
+Public Property Get items() As Collection
+End Property
+
+Public Property Get CurrentItem() As IDriveItem
 End Property
 
 Public Property Get SelectedItems() As Collection
 End Property
+
+Public Sub SetItems(ByRef value As Collection)
+End Sub
+
+Public Sub SetCurrentItem(ByRef value As IDriveItem)
+End Sub
+
+Public Sub SetSelectedItems(ByRef value As Collection)
+End Sub
