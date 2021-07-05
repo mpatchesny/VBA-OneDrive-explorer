@@ -8,12 +8,12 @@ Sub Test()
     Dim Self As String
     Self = ".test"
     
+    ' FIXME: factory
     Dim entryPoint As IDriveItem
     With New FileSystemItemProvider
         Set entryPoint = .GetItem("C:\Users\strielok\Downloads\")
     End With
     
-    ' FIXME: factory
     Dim Model As IExplorerViewModel
     With New ExplorerViewModel
         .Init Nothing, entryPoint, Nothing
@@ -22,7 +22,7 @@ Sub Test()
     
     Dim View As IExplorerView
     With New ExplorerView
-        .Init Model, "Select file", False
+        .Init Model, "Select file", True
         Set View = .Self
     End With
     
