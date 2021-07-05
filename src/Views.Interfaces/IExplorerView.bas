@@ -11,6 +11,9 @@ Attribute VB_Exposed = False
 '@Interface
 Option Explicit
 
+Public Property Get Model() As IExplorerViewModel
+End Property
+
 Public Property Get IsCancelled() As Boolean
 End Property
 

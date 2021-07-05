@@ -14,6 +14,7 @@ Implements IExplorerController
 
 Private Type TFields
     View As IExplorerView
+    Model As IExplorerViewModel
     IsDisplayed As Boolean
     IsCancelled As Boolean
     CurrentItem As IDriveItem
@@ -24,11 +25,15 @@ Private this As TFields
 Public Property Get View() As IExplorerView
     Set View = this.View
 End Property
-Private Property Get IExplorerController_View() As IExplorerView
-    Set IExplorerController_View = View
-End Property
 Private Property Let View(ByRef value As IExplorerView)
     Set this.View = value
+End Property
+
+Public Property Get Model() As IExplorerViewModel
+    Set Model = this.Model
+End Property
+Private Property Let Model(ByRef value As IExplorerViewModel)
+    Set this.Model = value
 End Property
 
 Public Property Get IsDisplayed() As Boolean
@@ -51,19 +56,8 @@ Private Property Let IsCancelled(ByVal value As Boolean)
     this.IsCancelled = value
 End Property
 
-Public Property Get CurrentItem() As IDriveItem
-    Set CurrentItem = this.CurrentItem
-End Property
-Private Property Get IExplorerController_CurrentItem() As IDriveItem
-    Set IExplorerController_CurrentItem = CurrentItem
-End Property
-Private Property Let CurrentItem(ByRef value As IDriveItem)
-    Set this.CurrentItem = value
-End Property
-
 Public Property Get SelectedItems() As Collection
-    If this.SelectedItems Is Nothing Then Set this.SelectedItems = New Collection
-    Set SelectedItems = this.SelectedItems
+    Set SelectedItems = Model.SelectedItems
 End Property
 Private Property Get IExplorerController_SelectedItems() As Collection
     Set IExplorerController_SelectedItems = SelectedItems
@@ -79,9 +73,9 @@ Private Property Get IExplorerController_Self() As IExplorerController
     Set IExplorerController_Self = Self
 End Property
 
-Public Sub Init(ByRef cView As IExplorerView, ByRef cCurrentItem As IDriveItem)
+Public Sub Init(ByRef cView As IExplorerView, ByRef cModel As Object)
     View = cView
-    CurrentItem = cCurrentItem
+    Model = cModel
 End Sub
 
 Public Sub Display()

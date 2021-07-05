@@ -11,16 +11,10 @@ Attribute VB_Exposed = False
 '@Interface
 Option Explicit
 
-Public Property Get View() As IExplorerView
-End Property
-
 Public Property Get IsDisplayed() As Boolean
 End Property
 
 Public Property Get IsCancelled() As Boolean
-End Property
-
-Public Property Get CurrentItem() As IDriveItem
 End Property
 
 Public Property Get SelectedItems() As Collection
