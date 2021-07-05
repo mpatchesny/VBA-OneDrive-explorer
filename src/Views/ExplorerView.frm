@@ -1,7 +1,7 @@
 VERSION 5.00
 Begin {C62A69F0-16DC-11CE-9E98-00AA00574A4F} ExplorerView 
    Caption         =   "UserForm1"
-   ClientHeight    =   5820
+   ClientHeight    =   5925
    ClientLeft      =   120
    ClientTop       =   465
    ClientWidth     =   7755
@@ -43,7 +43,8 @@ Public Sub Init(ByVal title As String)
 End Sub
 
 Public Sub Display()
-    Me.Display
+    Me.RefreshButton.Caption = ChrW(&HE72C)
+    Me.Show
 End Sub
 Private Sub IExplorerView_Display()
     Display
@@ -58,6 +59,10 @@ End Sub
 
 Private Sub OkButton_Click()
     OK
+End Sub
+
+Private Sub RefreshButton_Click()
+    ' TODO
 End Sub
 
 Private Sub UserForm_QueryClose(cCancel As Integer, CloseMode As Integer)
