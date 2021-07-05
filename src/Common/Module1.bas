@@ -9,25 +9,36 @@ Sub Test()
     Self = ".test"
     
     Dim entryPoint As IDriveItem
-    Dim col As Collection
-    Dim col2 As Collection
-    
     With New FileSystemItemProvider
         Set entryPoint = .GetItem("C:\Users\strielok\Downloads\")
-        Set col = .GetItems(entryPoint)
     End With
     
-    DebugPrintItemCol col
+    ' FIXME: factory
+    Dim Model As IExplorerViewModel
+    With New ExplorerViewModel
+        .Init Nothing, entryPoint, Nothing
+        Set Model = .Self
+    End With
     
-    Dim item As IDriveItem
-    Dim newFolder As IFolder
-    For Each item In col
-        If item.IsFolder Then
-            Set newFolder = item
-            Set col2 = newFolder.GetChildren
-            DebugPrintItemCol col2
-        End If
-    Next item
+    Dim View As IExplorerView
+    With New ExplorerView
+        .Init Model, "Select file", False
+        Set View = .Self
+    End With
+    
+    Dim controller As IExplorerController
+    With New ExplorerController
+        .Init View, Model
+        Set controller = .Self
+    End With
+    
+    controller.Display
+    
+    Dim SelectedItems As Collection
+    If Not controller.IsCancelled Then
+        Set SelectedItems = controller.SelectedItems
+        DebugPrintItemCol SelectedItems
+    End If
     
     Exit Sub
     
