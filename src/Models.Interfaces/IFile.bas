@@ -20,7 +20,7 @@ End Property
 Public Property Get Name() As String
 End Property
 
-Public Property Get Size() As Long
+Public Property Get Size() As String
 End Property
 
 Public Property Get CreatedTime() As Date

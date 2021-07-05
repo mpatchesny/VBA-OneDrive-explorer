@@ -18,7 +18,7 @@ Private Type TFields
     Name As String
     LastModifiedTime As Date
     CreatedTime As Date
-    Size As Long
+    Size As String
     parent As IDriveItem
     path As String
 End Type
@@ -67,13 +67,13 @@ Private Property Let LastModifiedTime(ByVal value As Date)
     this.LastModifiedTime = value
 End Property
 
-Public Property Get Size() As Long
+Public Property Get Size() As String
     Size = this.Size
 End Property
-Private Property Get IFile_Size() As Long
+Private Property Get IFile_Size() As String
     IFile_Size = Size
 End Property
-Private Property Let Size(ByVal value As Long)
+Private Property Let Size(ByVal value As String)
     this.Size = value
 End Property
 
@@ -129,9 +129,9 @@ End Property
 
 Public Sub Init(ByVal cId As String, _
                 ByVal cName As String, _
-                ByVal cLastModifiedTime, _
-                ByVal cCreatedTime, _
-                ByVal cSize As Long, _
+                ByVal cLastModifiedTime As Date, _
+                ByVal cCreatedTime As Date, _
+                ByVal cSize As String, _
                 ByRef cParent As IDriveItem, _
                 ByVal cPath As String)
     Id = cId
@@ -139,6 +139,7 @@ Public Sub Init(ByVal cId As String, _
     LastModifiedTime = cLastModifiedTime
     CreatedTime = cCreatedTime
     parent = cParent
+    ' if not isnumeric(csize) then
     Size = cSize
     path = cPath
 End Sub
