@@ -185,7 +185,7 @@ Public Function ParseJson(ByVal JsonString As String) As Object
         Set ParseJson = json_ParseArray(JsonString, json_Index)
     Case Else
         ' Error: Invalid JSON string
-        err.Raise ErrorCodes.JsonParseError, "JSONConverter", json_ParseErrorMessage(JsonString, json_Index, "Expecting '{' or '['")
+        err.Raise 10001, "JSONConverter", json_ParseErrorMessage(JsonString, json_Index, "Expecting '{' or '['")
     End Select
 End Function
 
@@ -466,7 +466,7 @@ Private Function json_ParseObject(json_String As String, ByRef json_Index As Lon
     Set json_ParseObject = New Dictionary
     json_SkipSpaces json_String, json_Index
     If VBA.Mid$(json_String, json_Index, 1) <> "{" Then
-        err.Raise ErrorCodes.JsonParseError, "JSONConverter", json_ParseErrorMessage(json_String, json_Index, "Expecting '{'")
+        err.Raise 10001, "JSONConverter", json_ParseErrorMessage(json_String, json_Index, "Expecting '{'")
     Else
         json_Index = json_Index + 1
 
@@ -496,7 +496,7 @@ Private Function json_ParseArray(json_String As String, ByRef json_Index As Long
 
     json_SkipSpaces json_String, json_Index
     If VBA.Mid$(json_String, json_Index, 1) <> "[" Then
-        err.Raise ErrorCodes.JsonParseError, "JSONConverter", json_ParseErrorMessage(json_String, json_Index, "Expecting '['")
+        err.Raise 10001, "JSONConverter", json_ParseErrorMessage(json_String, json_Index, "Expecting '['")
     Else
         json_Index = json_Index + 1
 
@@ -537,7 +537,7 @@ Private Function json_ParseValue(json_String As String, ByRef json_Index As Long
         ElseIf VBA.InStr("+-0123456789", VBA.Mid$(json_String, json_Index, 1)) Then
             json_ParseValue = json_ParseNumber(json_String, json_Index)
         Else
-            err.Raise ErrorCodes.JsonParseError, "JSONConverter", json_ParseErrorMessage(json_String, json_Index, "Expecting 'STRING', 'NUMBER', null, true, false, '{', or '['")
+            err.Raise 10001, "JSONConverter", json_ParseErrorMessage(json_String, json_Index, "Expecting 'STRING', 'NUMBER', null, true, false, '{', or '['")
         End If
     End Select
 End Function
@@ -651,13 +651,13 @@ Private Function json_ParseKey(json_String As String, ByRef json_Index As Long) 
             End If
         Loop
     Else
-        err.Raise ErrorCodes.JsonParseError, "JSONConverter", json_ParseErrorMessage(json_String, json_Index, "Expecting '""' or '''")
+        err.Raise 10001, "JSONConverter", json_ParseErrorMessage(json_String, json_Index, "Expecting '""' or '''")
     End If
 
     ' Check for colon and skip if present or throw if not present
     json_SkipSpaces json_String, json_Index
     If VBA.Mid$(json_String, json_Index, 1) <> ":" Then
-        err.Raise ErrorCodes.JsonParseError, "JSONConverter", json_ParseErrorMessage(json_String, json_Index, "Expecting ':'")
+        err.Raise 10001, "JSONConverter", json_ParseErrorMessage(json_String, json_Index, "Expecting ':'")
     Else
         json_Index = json_Index + 1
     End If
