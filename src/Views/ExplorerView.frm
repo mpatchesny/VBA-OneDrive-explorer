@@ -21,6 +21,7 @@ Implements IExplorerView
 Private Type TFields
     Model As IExplorerViewModel
     IsCancelled As Boolean
+    SelectMode As ESelectMode
 End Type
 Private this As TFields
 
@@ -51,7 +52,10 @@ Private Property Get IExplorerView_Self() As IExplorerView
     Set IExplorerView_Self = Self
 End Property
 
-Public Sub Init(ByRef cModel As IExplorerViewModel, ByVal title As String, ByVal multiselect As Boolean)
+Public Sub Init(ByRef cModel As IExplorerViewModel, _
+                ByVal title As String, _
+                ByVal multiselect As Boolean, _
+                Optional ByVal cSelectMode As ESelectMode = ESelectMode.ESelectModeAll)
     Model = cModel
     Me.Caption = title
     If multiselect Then
@@ -59,6 +63,7 @@ Public Sub Init(ByRef cModel As IExplorerViewModel, ByVal title As String, ByVal
     Else
          ListBox.multiselect = fmMultiSelectSingle
     End If
+    this.SelectMode = cSelectMode
 End Sub
 
 Public Sub Display()
@@ -79,6 +84,7 @@ End Sub
 
 Public Sub OK()
     IsCancelled = False
+    Model.SetSelectedItems GetSelectedItems
     HideView
 End Sub
 
@@ -98,13 +104,16 @@ Private Sub UpdateView()
     widths = GetListboxColumnsWidth(data)
     widths(0) = 0 ' hide ID column
     ListBox.ColumnWidths = Join(widths, ";")
+    PathTextBox.text = Model.CurrentItem.path
 End Sub
 
 Private Sub RefreshView()
     Dim fldr As IFolder
     Set fldr = Model.CurrentItem
+    
     Dim col As Collection
     Set col = fldr.GetChildren
+    
     Model.SetItems col
     UpdateView
 End Sub
@@ -150,7 +159,44 @@ Private Sub UserForm_Resize()
 End Sub
 
 ' Helpers
+Private Function GetSelectedItems() As Collection
+    Dim col As Collection
+    Set col = New Collection
+    
+    Dim Id As String
+    Dim item As IDriveItem
+    
+    Dim i As Long
+    For i = 1 To UBound(ListBox.List, 1)
+        If ListBox.selected(i) Then
+            Id = ListBox.List(i, 0)
+            Set item = GetItemFromId(Id)
+            
+            Select Case this.SelectMode
+            Case ESelectMode.ESelectModeFilesOnly
+                If item.IsFile Then col.Add item
+                
+            Case ESelectMode.ESelectModeFoldersOnly
+                If item.IsFolder Then col.Add item
+                
+            Case Else
+                col.Add item
+                
+            End Select
+        End If
+    Next i
+    
+    Set GetSelectedItems = col
+End Function
+
 Private Function GetItemFromId(ByVal Id As String) As IDriveItem
+    If Not Model.CurrentItem.parent Is Nothing Then
+        If Id = Model.CurrentItem.parent.Id Then
+            Set GetItemFromId = Model.CurrentItem.parent
+            Exit Function
+        End If
+    End If
+    
     Dim item As IDriveItem
     For Each item In Model.items
         If item.Id = Id Then
@@ -173,6 +219,14 @@ Private Function IDriveItemCollectionToVariantArray() As Variant
         arr(0, 1) = "Name"
         arr(0, 2) = "Size"
         arr(0, 3) = "Modification time"
+        
+        i = 1
+        If Not Model.CurrentItem.parent Is Nothing Then
+            ReDim arr(arrItemsCount + 1, 3)
+            arr(1, 0) = Model.CurrentItem.parent.Id
+            arr(1, 1) = ".."
+            i = 2
+        End If
         
         Dim fld As IFolder
         Dim fle As IFile

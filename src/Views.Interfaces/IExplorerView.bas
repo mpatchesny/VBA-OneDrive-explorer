@@ -11,6 +11,12 @@ Attribute VB_Exposed = False
 '@Interface
 Option Explicit
 
+Public Enum ESelectMode
+    ESelectModeAll = 1
+    ESelectModeFilesOnly = 2
+    ESelectModeFoldersOnly = 3
+End Enum
+
 Public Property Get Model() As IExplorerViewModel
 End Property
 
