@@ -12,7 +12,22 @@ Option Explicit
 
 Implements IItemProvider
 
-Public Function GetItem(ByVal path As String, Optional ByRef parent As IDriveItem) As IDriveItem
+Private fileFactory As IFileFactory
+Private folderFactory As IFolderFactory
+
+Public Property Get Self() As FileSystemItemProvider
+    Set Self = Me
+End Property
+Private Property Get IItemProvider_Self() As IItemProvider
+    Set IItemProvider_Self = Self
+End Property
+
+Public Sub Init(ByRef cFileFactory As IFileFactory, ByRef cFolderFactory As IFolderFactory)
+    Set fileFactory = cFileFactory
+    Set folderFactory = cFolderFactory
+End Sub
+
+Public Function GetItem(ByVal path As String, Optional ByRef Parent As IDriveItem) As IDriveItem
 
     On Error GoTo ErrHandler
     Dim Self As String
@@ -23,12 +38,12 @@ Public Function GetItem(ByVal path As String, Optional ByRef parent As IDriveIte
     
     Dim item As IDriveItem
     If fso.FolderExists(path) Then
-        With FsoFolderToOnedriveFolder(fso, path, parent)
+        With FsoFolderToOnedriveFolder(fso, path, Parent)
             Set item = .Self
         End With
     
     ElseIf fso.FileExists(path) Then
-        With FsoFileToOneDriveFile(fso, path, parent)
+        With FsoFileToOneDriveFile(fso, path, Parent)
             Set item = .Self
         End With
         
@@ -45,11 +60,11 @@ ErrHandler:
     err.Raise err.Number, err.Source & ";" & Self, err.Description
 
 End Function
-Private Function IItemProvider_GetItem(ByVal path As String, Optional ByRef parent As IDriveItem) As IDriveItem
-    Set IItemProvider_GetItem = GetItem(path, parent)
+Private Function IItemProvider_GetItem(ByVal path As String, Optional ByRef Parent As IDriveItem) As IDriveItem
+    Set IItemProvider_GetItem = GetItem(path, Parent)
 End Function
 
-Public Function GetItems(ByRef parent As IDriveItem) As Collection
+Public Function GetItems(ByRef Parent As IDriveItem) As Collection
 
     On Error GoTo ErrHandler
     Dim Self As String
@@ -59,19 +74,19 @@ Public Function GetItems(ByRef parent As IDriveItem) As Collection
     Set fso = New Scripting.FileSystemObject
     
     Dim thisFolder As Folder
-    Set thisFolder = fso.GetFolder(parent.path)
+    Set thisFolder = fso.GetFolder(Parent.path)
     
     Dim col As Collection
     Set col = New Collection
     
     Dim item2 As Folder
     For Each item2 In thisFolder.SubFolders
-        col.Add FsoFolderToOnedriveFolder(fso, item2.path, parent)
+        col.Add FsoFolderToOnedriveFolder(fso, item2.path, Parent)
     Next item2
 
     Dim item As file
     For Each item In thisFolder.files
-        col.Add FsoFileToOneDriveFile(fso, item.path, parent)
+        col.Add FsoFileToOneDriveFile(fso, item.path, Parent)
     Next item
     
     Set GetItems = col
@@ -82,33 +97,20 @@ ErrHandler:
     err.Raise err.Number, err.Source & ";" & Self, err.Description
 
 End Function
-Private Function IItemProvider_GetItems(ByRef parent As IDriveItem) As Collection
-    Set IItemProvider_GetItems = GetItems(parent)
+Private Function IItemProvider_GetItems(ByRef Parent As IDriveItem) As Collection
+    Set IItemProvider_GetItems = GetItems(Parent)
 End Function
 
-Private Function FsoFileToOneDriveFile(ByRef fso As Scripting.FileSystemObject, ByVal path As String, ByRef parent As IDriveItem) As IFile
-
-    ' FIXME: factory jako dependency injection
-
+Private Function FsoFileToOneDriveFile(ByRef fso As Scripting.FileSystemObject, ByVal path As String, ByRef Parent As IDriveItem) As IFile
     Dim item As file
     Set item = fso.GetFile(path)
-    
-    With New OneDriveFile
-        .Init item.path, item.Name, item.DateLastModified, item.DateCreated, item.Size, parent, item.path
-        Set FsoFileToOneDriveFile = .Self
-    End With
+    Set FsoFileToOneDriveFile = fileFactory.NewFile(item.path, item.Name, item.DateLastModified, item.DateCreated, item.Size, Parent, item.path)
 End Function
 
-Private Function FsoFolderToOnedriveFolder(ByRef fso As Scripting.FileSystemObject, ByVal path As String, ByRef parent As IDriveItem) As IFolder
-
-    ' FIXME: factory jako dependency injection
-
+Private Function FsoFolderToOnedriveFolder(ByRef fso As Scripting.FileSystemObject, ByVal path As String, ByRef Parent As IDriveItem) As IFolder
     Dim item As Folder
     Set item = fso.GetFolder(path)
-    
-    With New OneDriveFolder
-        .Init item.path, item.Name, parent, 0, item.path, New FileSystemItemProvider
-        Set FsoFolderToOnedriveFolder = .Self
-    End With
+    Set FsoFolderToOnedriveFolder = folderFactory.NewFolder(item.path, item.Name, Parent, 0, item.path, Me)
 End Function
+
 
