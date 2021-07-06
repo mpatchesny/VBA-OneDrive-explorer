@@ -14,7 +14,7 @@ Option Explicit
 Public Property Get Self() As IDriveItem
 End Property
 
-Public Property Get parent() As IDriveItem
+Public Property Get Parent() As IDriveItem
 End Property
 
 Public Property Get Id() As String

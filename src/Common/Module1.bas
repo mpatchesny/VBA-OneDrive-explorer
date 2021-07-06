@@ -8,30 +8,19 @@ Sub Test()
     Dim Self As String
     Self = ".test"
     
-    ' FIXME: factory
-    Dim entryPoint As IDriveItem
+    Dim provider As IItemProvider
     With New FileSystemItemProvider
-        Set entryPoint = .GetItem("C:\Users\strielok\Downloads\")
+        .Init New OneDriveFileFactory, New OneDriveFolderFactory
+        Set provider = .Self
     End With
     
-    Dim Model As IExplorerViewModel
-    With New ExplorerViewModel
-        .Init Nothing, entryPoint, Nothing
-        Set Model = .Self
-    End With
-    
-    Dim View As IExplorerView
-    With New ExplorerView
-        .Init Model, "Select file", True
-        Set View = .Self
-    End With
-    
+    Dim entryPoint As IDriveItem
+    Set entryPoint = provider.GetItem("C:\Users\strielok\Desktop")
+
     Dim controller As IExplorerController
-    With New ExplorerController
-        .Init View, Model
-        Set controller = .Self
+    With New ExplorerControllerFactory
+        Set controller = .NewExplorerController(entryPoint, "Select file", False)
     End With
-    
     controller.Display
     
     Dim SelectedItems As Collection

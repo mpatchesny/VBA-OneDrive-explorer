@@ -16,7 +16,7 @@ Implements IFolder
 Private Type TFields
     Id As String
     Name As String
-    parent As IDriveItem
+    Parent As IDriveItem
     ChildrenCount As Long
     path As String
     provider As IItemProvider
@@ -60,14 +60,14 @@ Private Property Get IDriveItem_IsFolder() As Boolean
     IDriveItem_IsFolder = IsFolder
 End Property
 
-Public Property Get parent() As IDriveItem
-    Set parent = this.parent
+Public Property Get Parent() As IDriveItem
+    Set Parent = this.Parent
 End Property
 Private Property Get IDriveItem_Parent() As IDriveItem
-    Set IDriveItem_Parent = parent
+    Set IDriveItem_Parent = Parent
 End Property
-Private Property Let parent(ByVal value As IDriveItem)
-    Set this.parent = value
+Private Property Let Parent(ByVal value As IDriveItem)
+    Set this.Parent = value
 End Property
 
 Public Property Get ChildrenCount() As Long
@@ -114,7 +114,7 @@ Public Sub Init(ByVal cId As String, _
                 ByRef provider As IItemProvider)
     Id = cId
     Name = cName
-    parent = cParent
+    Parent = cParent
     ChildrenCount = cChildrenCount
     path = cPath
     Set this.provider = provider

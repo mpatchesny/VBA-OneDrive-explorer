@@ -19,7 +19,7 @@ Private Type TFields
     LastModifiedTime As Date
     CreatedTime As Date
     Size As String
-    parent As IDriveItem
+    Parent As IDriveItem
     path As String
 End Type
 Private this As TFields
@@ -91,14 +91,14 @@ Private Property Get IDriveItem_IsFolder() As Boolean
     IDriveItem_IsFolder = IsFolder
 End Property
 
-Public Property Get parent() As IDriveItem
-    Set parent = this.parent
+Public Property Get Parent() As IDriveItem
+    Set Parent = this.Parent
 End Property
 Private Property Get IDriveItem_Parent() As IDriveItem
-    Set IDriveItem_Parent = parent
+    Set IDriveItem_Parent = Parent
 End Property
-Private Property Let parent(ByVal value As IDriveItem)
-    Set this.parent = value
+Private Property Let Parent(ByVal value As IDriveItem)
+    Set this.Parent = value
 End Property
 
 Public Property Get path() As String
@@ -138,7 +138,7 @@ Public Sub Init(ByVal cId As String, _
     Name = cName
     LastModifiedTime = cLastModifiedTime
     CreatedTime = cCreatedTime
-    parent = cParent
+    Parent = cParent
     ' if not isnumeric(csize) then
     Size = cSize
     path = cPath
