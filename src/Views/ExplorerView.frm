@@ -21,7 +21,7 @@ Implements IExplorerView
 Private Type TFields
     Model As IExplorerViewModel
     IsCancelled As Boolean
-    SelectMode As ESelectMode
+    selectMode As ESelectMode
 End Type
 Private this As TFields
 
@@ -63,7 +63,7 @@ Public Sub Init(ByRef cModel As IExplorerViewModel, _
     Else
          ListBox.multiselect = fmMultiSelectSingle
     End If
-    this.SelectMode = cSelectMode
+    this.selectMode = cSelectMode
 End Sub
 
 Public Sub Display()
@@ -120,6 +120,7 @@ End Sub
 
 Private Sub ItemDoubleClickLogic()
     ' FIXME: change method name
+    ' FIXME: change selected getter
     Dim selectedId As String
     selectedId = ListBox.value
     
@@ -172,7 +173,7 @@ Private Function GetSelectedItems() As Collection
             Id = ListBox.List(i, 0)
             Set item = GetItemFromId(Id)
             
-            Select Case this.SelectMode
+            Select Case this.selectMode
             Case ESelectMode.ESelectModeFilesOnly
                 If item.IsFile Then col.Add item
                 
@@ -190,9 +191,9 @@ Private Function GetSelectedItems() As Collection
 End Function
 
 Private Function GetItemFromId(ByVal Id As String) As IDriveItem
-    If Not Model.CurrentItem.parent Is Nothing Then
-        If Id = Model.CurrentItem.parent.Id Then
-            Set GetItemFromId = Model.CurrentItem.parent
+    If Not Model.CurrentItem.Parent Is Nothing Then
+        If Id = Model.CurrentItem.Parent.Id Then
+            Set GetItemFromId = Model.CurrentItem.Parent
             Exit Function
         End If
     End If
@@ -209,24 +210,24 @@ End Function
 Private Function IDriveItemCollectionToVariantArray() As Variant
     Dim arr As Variant
     If Not Model.items Is Nothing Then
-
-        Dim i As Long
         Dim arrItemsCount As Long
         arrItemsCount = Model.items.Count
         
         ReDim arr(arrItemsCount, 3)
+
+        Dim i As Long
+        i = 1
+        If Not Model.CurrentItem.Parent Is Nothing Then
+            ReDim arr(arrItemsCount + 1, 3)
+            arr(1, 0) = Model.CurrentItem.Parent.Id
+            arr(1, 1) = ".."
+            i = 2
+        End If
+        
         arr(0, 0) = "id"
         arr(0, 1) = "Name"
         arr(0, 2) = "Size"
         arr(0, 3) = "Modification time"
-        
-        i = 1
-        If Not Model.CurrentItem.parent Is Nothing Then
-            ReDim arr(arrItemsCount + 1, 3)
-            arr(1, 0) = Model.CurrentItem.parent.Id
-            arr(1, 1) = ".."
-            i = 2
-        End If
         
         Dim fld As IFolder
         Dim fle As IFile
@@ -236,7 +237,7 @@ Private Function IDriveItemCollectionToVariantArray() As Variant
                 Set fle = item
                 arr(i, 0) = fle.Id
                 arr(i, 1) = fle.Name
-                arr(i, 2) = fle.Size
+                arr(i, 2) = fle.Size \ 1024
                 arr(i, 3) = fle.LastModifiedTime
             Else
                 Set fld = item
