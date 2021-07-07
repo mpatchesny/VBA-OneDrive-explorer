@@ -56,6 +56,9 @@ Public Sub Init(ByRef cModel As IExplorerViewModel, _
                 ByVal title As String, _
                 ByVal multiselect As Boolean, _
                 Optional ByVal cSelectMode As ESelectMode = ESelectMode.ESelectModeAll)
+                
+    GuardClauses.IsNothing cModel, TypeName(cModel)
+
     Model = cModel
     Me.Caption = title
     If multiselect Then
@@ -84,7 +87,10 @@ End Sub
 
 Public Sub OK()
     IsCancelled = False
-    Model.SetSelectedItems GetSelectedItems
+    Dim col As Collection
+    Set col = GetSelectedItems
+    Set col = FilterSelectedItems(col, this.selectMode)
+    Model.SetSelectedItems col
     HideView
 End Sub
 
@@ -118,19 +124,19 @@ Private Sub RefreshView()
     UpdateView
 End Sub
 
-Private Sub ItemDoubleClickLogic()
-    ' FIXME: change method name
-    ' FIXME: change selected getter
-    Dim selectedId As String
-    selectedId = ListBox.value
+Private Sub ChangeFolder()
+    Dim selected As Collection
+    Set selected = GetSelectedItems
     
-    Dim item As IDriveItem
-    Set item = GetItemFromId(selectedId)
-    
-    If Not item Is Nothing Then
-        If item.IsFolder Then
-            Model.SetCurrentItem item
-            RefreshView
+    If Not selected Is Nothing Then
+        If selected.Count <> 0 Then
+            Dim item As IDriveItem
+            Set item = selected(1)
+            
+            If item.IsFolder Then
+                Model.SetCurrentItem item
+                RefreshView
+            End If
         End If
     End If
 End Sub
@@ -145,7 +151,7 @@ Private Sub RefreshButton_Click()
 End Sub
 
 Private Sub ListBox_DblClick(ByVal Cancel As MSForms.ReturnBoolean)
-    ItemDoubleClickLogic
+    ChangeFolder
 End Sub
 
 Private Sub UserForm_QueryClose(cCancel As Integer, CloseMode As Integer)
@@ -172,22 +178,37 @@ Private Function GetSelectedItems() As Collection
         If ListBox.selected(i) Then
             Id = ListBox.List(i, 0)
             Set item = GetItemFromId(Id)
-            
-            Select Case this.selectMode
-            Case ESelectMode.ESelectModeFilesOnly
-                If item.IsFile Then col.Add item
-                
-            Case ESelectMode.ESelectModeFoldersOnly
-                If item.IsFolder Then col.Add item
-                
-            Case Else
-                col.Add item
-                
-            End Select
+            col.Add item
         End If
     Next i
     
     Set GetSelectedItems = col
+End Function
+
+Private Function FilterSelectedItems(ByRef col As Collection, ByVal mode As ESelectMode) As Collection
+
+    Dim col2 As Collection
+    
+    If mode = ESelectMode.ESelectModeAll Then
+        Set col2 = col
+    
+    Else
+        Dim item As IDriveItem
+        For Each item In col
+            Select Case mode
+            Case ESelectMode.ESelectModeFilesOnly
+                If item.IsFile Then col2.Add item
+                
+            Case ESelectMode.ESelectModeFoldersOnly
+                If item.IsFolder Then col2.Add item
+                
+            End Select
+        Next item
+        
+    End If
+    
+    Set FilterSelectedItems = col2
+
 End Function
 
 Private Function GetItemFromId(ByVal Id As String) As IDriveItem
@@ -236,13 +257,13 @@ Private Function IDriveItemCollectionToVariantArray() As Variant
             If item.IsFile Then
                 Set fle = item
                 arr(i, 0) = fle.Id
-                arr(i, 1) = fle.Name
+                arr(i, 1) = fle.name
                 arr(i, 2) = fle.Size \ 1024
                 arr(i, 3) = fle.LastModifiedTime
             Else
                 Set fld = item
                 arr(i, 0) = fld.Id
-                arr(i, 1) = fld.Name
+                arr(i, 1) = fld.name
                 arr(i, 2) = ""
                 arr(i, 3) = ""
             End If
@@ -267,10 +288,9 @@ Private Function GetListboxColumnsWidth(ByVal data As Variant) As Variant
     On Error Resume Next
        
     Dim widths As Variant
+    Dim max As Integer
     Dim i As Integer
     Dim j As Integer
-    Dim max As Integer
-    
     For i = LBound(data, 2) To UBound(data, 2)
         For j = LBound(data, 1) To UBound(data, 1)
             If max < Len(data(j, i)) Then max = Len(data(j, i))

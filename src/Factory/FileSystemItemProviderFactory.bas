@@ -20,6 +20,10 @@ Private Property Get IItemProviderFactory_Self() As IItemProviderFactory
 End Property
 
 Public Function NewItemProvider(ByRef fileFactory As IFileFactory, ByRef folderFactory As IFolderFactory) As IItemProvider
+
+    GuardClauses.IsNothing fileFactory, TypeName(fileFactory)
+    GuardClauses.IsNothing folderFactory, TypeName(folderFactory)
+
     With New FileSystemItemProvider
         .Init fileFactory, folderFactory
         Set NewItemProvider = .Self

@@ -23,6 +23,9 @@ Public Function NewExplorerController(ByRef entryPoint As IDriveItem, _
                                       ByVal userformTitle As String, _
                                       ByVal multiselect As Boolean, _
                                       Optional ByVal selectMode As ESelectMode = ESelectMode.ESelectModeAll) As IExplorerController
+                                      
+    GuardClauses.IsNothing entryPoint, TypeName(Me)
+    GuardClauses.IsEmptyString userformTitle, "User form title"
                                         
     Dim Model As IExplorerViewModel
     With New ExplorerViewModel

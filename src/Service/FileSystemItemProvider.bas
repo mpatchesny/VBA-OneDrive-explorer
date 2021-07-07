@@ -23,6 +23,10 @@ Private Property Get IItemProvider_Self() As IItemProvider
 End Property
 
 Public Sub Init(ByRef cFileFactory As IFileFactory, ByRef cFolderFactory As IFolderFactory)
+
+    GuardClauses.IsNothing cFileFactory, TypeName(cFileFactory)
+    GuardClauses.IsNothing cFolderFactory, TypeName(cFolderFactory)
+
     Set fileFactory = cFileFactory
     Set folderFactory = cFolderFactory
 End Sub
@@ -104,13 +108,13 @@ End Function
 Private Function FsoFileToOneDriveFile(ByRef fso As Scripting.FileSystemObject, ByVal path As String, ByRef Parent As IDriveItem) As IFile
     Dim item As file
     Set item = fso.GetFile(path)
-    Set FsoFileToOneDriveFile = fileFactory.NewFile(item.path, item.Name, item.DateLastModified, item.DateCreated, item.Size, Parent, item.path)
+    Set FsoFileToOneDriveFile = fileFactory.NewFile(item.path, item.name, item.DateLastModified, item.DateCreated, item.Size, Parent, item.path)
 End Function
 
 Private Function FsoFolderToOnedriveFolder(ByRef fso As Scripting.FileSystemObject, ByVal path As String, ByRef Parent As IDriveItem) As IFolder
     Dim item As Folder
     Set item = fso.GetFolder(path)
-    Set FsoFolderToOnedriveFolder = folderFactory.NewFolder(item.path, item.Name, Parent, 0, item.path, Me)
+    Set FsoFolderToOnedriveFolder = folderFactory.NewFolder(item.path, item.name, Parent, 0, item.path, Me)
 End Function
 
 

@@ -58,7 +58,9 @@ Private Property Get IExplorerController_Self() As IExplorerController
     Set IExplorerController_Self = Self
 End Property
 
-Public Sub Init(ByRef cView As IExplorerView, ByRef cModel As Object)
+Public Sub Init(ByRef cView As IExplorerView, ByRef cModel As IExplorerViewModel)
+    GuardClauses.IsNothing cView, TypeName(cView)
+    GuardClauses.IsNothing cModel, TypeName(cModel)
     Set this.View = cView
     Set this.Model = cModel
 End Sub
