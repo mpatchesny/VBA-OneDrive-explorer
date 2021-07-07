@@ -15,7 +15,7 @@ Public Property Get Self() As IFolderFactory
 End Property
 
 Public Function NewFolder(ByVal Id As String, _
-                        ByVal Name As String, _
+                        ByVal name As String, _
                         ByRef Parent As IDriveItem, _
                         ByVal ChildrenCount As Long, _
                         ByVal path As String, _

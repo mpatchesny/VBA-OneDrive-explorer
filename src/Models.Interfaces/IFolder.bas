@@ -17,7 +17,7 @@ End Property
 Public Property Get Id() As String
 End Property
 
-Public Property Get Name() As String
+Public Property Get name() As String
 End Property
 
 Public Property Get ChildrenCount() As Long

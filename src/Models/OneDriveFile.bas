@@ -15,7 +15,7 @@ Implements IFile
 
 Private Type TFields
     Id As String
-    Name As String
+    name As String
     LastModifiedTime As Date
     CreatedTime As Date
     Size As String
@@ -37,14 +37,14 @@ Private Property Let Id(ByVal value As String)
     this.Id = value
 End Property
 
-Public Property Get Name() As String
-    Name = this.Name
+Public Property Get name() As String
+    name = this.name
 End Property
 Private Property Get IFile_Name() As String
-    IFile_Name = Name
+    IFile_Name = name
 End Property
-Private Property Let Name(ByVal value As String)
-    this.Name = value
+Private Property Let name(ByVal value As String)
+    this.name = value
 End Property
 
 Private Property Get CreatedTime() As Date
@@ -135,7 +135,7 @@ Public Sub Init(ByVal cId As String, _
                 ByRef cParent As IDriveItem, _
                 ByVal cPath As String)
     Id = cId
-    Name = cName
+    name = cName
     LastModifiedTime = cLastModifiedTime
     CreatedTime = cCreatedTime
     Parent = cParent

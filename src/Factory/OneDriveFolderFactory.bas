@@ -20,23 +20,23 @@ Private Property Get IFolderFactory_Self() As IFolderFactory
 End Property
 
 Public Function NewFolder(ByVal Id As String, _
-                        ByVal Name As String, _
+                        ByVal name As String, _
                         ByRef Parent As IDriveItem, _
                         ByVal ChildrenCount As Long, _
                         ByVal path As String, _
                         ByRef provider As IItemProvider) As IFolder
     With New OneDriveFolder
-        .Init Id, Name, Parent, ChildrenCount, path, provider
+        .Init Id, name, Parent, ChildrenCount, path, provider
         Set NewFolder = .Self
     End With
 End Function
 Private Function IFolderFactory_NewFolder(ByVal Id As String, _
-                                        ByVal Name As String, _
+                                        ByVal name As String, _
                                         ByRef Parent As IDriveItem, _
                                         ByVal ChildrenCount As Long, _
                                         ByVal path As String, _
                                         ByRef provider As IItemProvider) As IFolder
-    Set IFolderFactory_NewFolder = NewFolder(Id, Name, Parent, ChildrenCount, path, provider)
+    Set IFolderFactory_NewFolder = NewFolder(Id, name, Parent, ChildrenCount, path, provider)
 End Function
 
 Public Function NewFolderFromJsonString(ByVal json As String) As IFolder

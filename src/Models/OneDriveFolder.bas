@@ -15,7 +15,7 @@ Implements IFolder
 
 Private Type TFields
     Id As String
-    Name As String
+    name As String
     Parent As IDriveItem
     ChildrenCount As Long
     path As String
@@ -36,14 +36,14 @@ Private Property Let Id(ByVal value As String)
     this.Id = value
 End Property
 
-Public Property Get Name() As String
-    Name = this.Name
+Public Property Get name() As String
+    name = this.name
 End Property
 Private Property Get IFolder_Name() As String
-    IFolder_Name = Name
+    IFolder_Name = name
 End Property
-Private Property Let Name(ByVal value As String)
-    this.Name = value
+Private Property Let name(ByVal value As String)
+    this.name = value
 End Property
 
 Public Property Get IsFile() As Boolean
@@ -113,7 +113,7 @@ Public Sub Init(ByVal cId As String, _
                 ByVal cPath As String, _
                 ByRef provider As IItemProvider)
     Id = cId
-    Name = cName
+    name = cName
     Parent = cParent
     ChildrenCount = cChildrenCount
     path = cPath

@@ -8,26 +8,14 @@ Sub Test()
     Dim Self As String
     Self = ".test"
     
-    Dim provider As IItemProvider
-    With New FileSystemItemProvider
-        .Init New OneDriveFileFactory, New OneDriveFolderFactory
-        Set provider = .Self
-    End With
-    
-    Dim entryPoint As IDriveItem
-    Set entryPoint = provider.GetItem("C:\Users\strielok\Desktop")
-
-    Dim controller As IExplorerController
-    With New ExplorerControllerFactory
-        Set controller = .NewExplorerController(entryPoint, "Select file", False)
-    End With
-    controller.Display
-    
     Dim SelectedItems As Collection
-    If Not controller.IsCancelled Then
-        Set SelectedItems = controller.SelectedItems
-        DebugPrintItemCol SelectedItems
-    End If
+    With New OneDriveFileExplorer
+        .Display "C:\Users\strielok\Desktop", "x", "Select file", True, ESelectModeAll
+        If Not .IsCancelled Then
+            Set SelectedItems = .SelectedItems
+            DebugPrintItemCol SelectedItems
+        End If
+    End With
     
     Exit Sub
     
