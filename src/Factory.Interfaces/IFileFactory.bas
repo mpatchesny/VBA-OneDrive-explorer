@@ -19,11 +19,11 @@ Public Function NewFile(ByVal id As String, _
                         ByVal LastModifiedTime As Date, _
                         ByVal CreatedTime As Date, _
                         ByVal Size As String, _
-                        ByRef Parent As IDriveItem, _
+                        ByRef parent As IDriveItem, _
                         ByVal path As String) As IFile
 End Function
 
-Public Function NewFileFromJsonString(ByVal json As String) As IFile
+Public Function NewFileFromDictionary(ByRef dict As Scripting.Dictionary, ByRef parent As IDriveItem) As IFile
 End Function
 
 

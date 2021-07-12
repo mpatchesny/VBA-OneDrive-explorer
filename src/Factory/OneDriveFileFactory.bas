@@ -24,11 +24,11 @@ Public Function NewFile(ByVal id As String, _
                                     ByVal LastModifiedTime As Date, _
                                     ByVal CreatedTime As Date, _
                                     ByVal Size As String, _
-                                    ByRef Parent As IDriveItem, _
+                                    ByRef parent As IDriveItem, _
                                     ByVal path As String) As IFile
                                     
     With New OneDriveFile
-        .Init id, name, LastModifiedTime, CreatedTime, Size, Parent, path
+        .Init id, name, LastModifiedTime, CreatedTime, Size, parent, path, ""
         Set NewFile = .Self
     End With
 
@@ -38,15 +38,29 @@ Private Function IFileFactory_NewFile(ByVal id As String, _
                                     ByVal LastModifiedTime As Date, _
                                     ByVal CreatedTime As Date, _
                                     ByVal Size As String, _
-                                    ByRef Parent As IDriveItem, _
+                                    ByRef parent As IDriveItem, _
                                     ByVal path As String) As IFile
-    Set IFileFactory_NewFile = NewFile(id, name, LastModifiedTime, CreatedTime, Size, Parent, path)
+    Set IFileFactory_NewFile = NewFile(id, name, LastModifiedTime, CreatedTime, Size, parent, path)
 End Function
 
-Public Function NewFileFromJsonString(ByVal json As String) As IFile
-    'TODO
+Public Function NewFileFromDictionary(ByRef d As Scripting.Dictionary, ByRef parent As IDriveItem) As IFile
+    
+    On Error GoTo ErrHandler
+    Dim Self As String
+    Self = TypeName(Me) & ".NewFileFromJsonString"
+    
+    With New OneDriveFile
+        .Init d("id"), d("name"), d("lastModifiedDateTime"), d("createdDateTime"), d("size"), parent, d("webUrl"), d("@microsoft.graph.downloadUrl")
+        Set NewFileFromDictionary = .Self
+    End With
+    
+    Exit Function
+    
+ErrHandler:
+    err.Raise err.Number, err.Source & ";" & Self, err.Description
+    
 End Function
-Private Function IFileFactory_NewFileFromJsonString(ByVal json As String) As IFile
-    Set IFileFactory_NewFileFromJsonString = NewFileFromJsonString(json)
+Private Function IFileFactory_NewFileFromDictionary(ByRef dict As Scripting.Dictionary, ByRef parent As IDriveItem) As IFile
+    Set IFileFactory_NewFileFromDictionary = NewFileFromDictionary(dict, parent)
 End Function
 
