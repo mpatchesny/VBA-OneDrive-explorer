@@ -11,6 +11,12 @@ Attribute VB_Exposed = False
 '@Interface
 Option Explicit
 
+Public Property Get ResponseStatus() As Long
+End Property
+
+Public Property Get Response() As String
+End Property
+
 Public Property Get Self() As IApi
 End Property
 
