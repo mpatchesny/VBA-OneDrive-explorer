@@ -16,7 +16,7 @@ End Property
 
 Public Function NewFolder(ByVal id As String, _
                         ByVal name As String, _
-                        ByRef Parent As IDriveItem, _
+                        ByRef parent As IDriveItem, _
                         ByVal ChildrenCount As Long, _
                         ByVal path As String, _
                         ByRef provider As IItemProvider) As IFolder

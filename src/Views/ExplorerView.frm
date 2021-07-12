@@ -212,9 +212,9 @@ Private Function FilterSelectedItems(ByRef col As Collection, ByVal mode As ESel
 End Function
 
 Private Function GetItemFromId(ByVal id As String) As IDriveItem
-    If Not Model.CurrentItem.Parent Is Nothing Then
-        If id = Model.CurrentItem.Parent.id Then
-            Set GetItemFromId = Model.CurrentItem.Parent
+    If Not Model.CurrentItem.parent Is Nothing Then
+        If id = Model.CurrentItem.parent.id Then
+            Set GetItemFromId = Model.CurrentItem.parent
             Exit Function
         End If
     End If
@@ -238,9 +238,9 @@ Private Function IDriveItemCollectionToVariantArray() As Variant
 
         Dim i As Long
         i = 1
-        If Not Model.CurrentItem.Parent Is Nothing Then
+        If Not Model.CurrentItem.parent Is Nothing Then
             ReDim arr(arrItemsCount + 1, 3)
-            arr(1, 0) = Model.CurrentItem.Parent.id
+            arr(1, 0) = Model.CurrentItem.parent.id
             arr(1, 1) = ".."
             i = 2
         End If

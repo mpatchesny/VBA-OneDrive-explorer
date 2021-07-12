@@ -20,8 +20,8 @@ Public Sub ApiTest()
     Debug.Print request.Status
     
     If request.Status = 200 Then
-        Dim response As String
-        response = request.ResponseText
+        Dim Response As String
+        Response = request.ResponseText
     End If
 
 End Sub

@@ -32,7 +32,7 @@ Public Sub Init(ByRef cFileFactory As IFileFactory, ByRef cFolderFactory As IFol
     Set api = cApi
 End Sub
 
-Public Function GetItem(ByVal path As String, Optional ByRef Parent As IDriveItem) As IDriveItem
+Public Function GetItem(ByVal path As String, Optional ByRef parent As IDriveItem) As IDriveItem
 
     On Error GoTo ErrHandler
     Dim Self As String
@@ -52,11 +52,11 @@ ErrHandler:
     err.Raise err.Number, err.Source & ";" & Self, err.Description
 
 End Function
-Private Function IItemProvider_GetItem(ByVal path As String, Optional ByRef Parent As IDriveItem) As IDriveItem
-    Set IItemProvider_GetItem = GetItem(path, Parent)
+Private Function IItemProvider_GetItem(ByVal path As String, Optional ByRef parent As IDriveItem) As IDriveItem
+    Set IItemProvider_GetItem = GetItem(path, parent)
 End Function
 
-Public Function GetItems(ByRef Parent As IDriveItem) As Collection
+Public Function GetItems(ByRef parent As IDriveItem) As Collection
 
     On Error GoTo ErrHandler
     Dim Self As String
@@ -70,11 +70,12 @@ ErrHandler:
     err.Raise err.Number, err.Source & ";" & Self, err.Description
 
 End Function
-Private Function IItemProvider_GetItems(ByRef Parent As IDriveItem) As Collection
-    Set IItemProvider_GetItems = GetItems(Parent)
+Private Function IItemProvider_GetItems(ByRef parent As IDriveItem) As Collection
+    Set IItemProvider_GetItems = GetItems(parent)
 End Function
 
 Private Function JsonToIDriveItem(ByVal json As String) As IDriveItem
+    ' ????
     Dim item As IDriveItem
     Set JsonToIDriveItem = item
 End Function
