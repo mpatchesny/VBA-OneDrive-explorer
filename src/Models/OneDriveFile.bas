@@ -19,8 +19,9 @@ Private Type TFields
     LastModifiedTime As Date
     CreatedTime As Date
     Size As String
-    Parent As IDriveItem
+    parent As IDriveItem
     path As String
+    DownloadUrl As String
 End Type
 Private this As TFields
 
@@ -91,14 +92,14 @@ Private Property Get IDriveItem_IsFolder() As Boolean
     IDriveItem_IsFolder = IsFolder
 End Property
 
-Public Property Get Parent() As IDriveItem
-    Set Parent = this.Parent
+Public Property Get parent() As IDriveItem
+    Set parent = this.parent
 End Property
 Private Property Get IDriveItem_Parent() As IDriveItem
-    Set IDriveItem_Parent = Parent
+    Set IDriveItem_Parent = parent
 End Property
-Private Property Let Parent(ByVal value As IDriveItem)
-    Set this.Parent = value
+Private Property Let parent(ByVal value As IDriveItem)
+    Set this.parent = value
 End Property
 
 Public Property Get path() As String
@@ -117,6 +118,13 @@ Private Property Let path(ByVal value As String)
     this.path = value
 End Property
 
+Public Property Get DownloadUrl() As String
+    DownloadUrl = this.DownloadUrl
+End Property
+Private Property Let DownloadUrl(ByVal value As String)
+    this.DownloadUrl = value
+End Property
+
 Public Property Get Self() As OneDriveFile
     Set Self = Me
 End Property
@@ -133,14 +141,16 @@ Public Sub Init(ByVal cId As String, _
                 ByVal cCreatedTime As Date, _
                 ByVal cSize As String, _
                 ByRef cParent As IDriveItem, _
-                ByVal cPath As String)
+                ByVal cPath As String, _
+                ByVal cDownloadUrl As String)
     id = cId
     name = cName
     LastModifiedTime = cLastModifiedTime
     CreatedTime = cCreatedTime
-    Parent = cParent
+    parent = cParent
     ' if not isnumeric(csize) then
     Size = cSize
     path = cPath
+    DownloadUrl = cDownloadUrl
 End Sub
 
