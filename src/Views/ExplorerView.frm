@@ -170,14 +170,14 @@ Private Function GetSelectedItems() As Collection
     Dim col As Collection
     Set col = New Collection
     
-    Dim Id As String
+    Dim id As String
     Dim item As IDriveItem
     
     Dim i As Long
     For i = 1 To UBound(ListBox.List, 1)
         If ListBox.selected(i) Then
-            Id = ListBox.List(i, 0)
-            Set item = GetItemFromId(Id)
+            id = ListBox.List(i, 0)
+            Set item = GetItemFromId(id)
             col.Add item
         End If
     Next i
@@ -211,9 +211,9 @@ Private Function FilterSelectedItems(ByRef col As Collection, ByVal mode As ESel
 
 End Function
 
-Private Function GetItemFromId(ByVal Id As String) As IDriveItem
+Private Function GetItemFromId(ByVal id As String) As IDriveItem
     If Not Model.CurrentItem.Parent Is Nothing Then
-        If Id = Model.CurrentItem.Parent.Id Then
+        If id = Model.CurrentItem.Parent.id Then
             Set GetItemFromId = Model.CurrentItem.Parent
             Exit Function
         End If
@@ -221,7 +221,7 @@ Private Function GetItemFromId(ByVal Id As String) As IDriveItem
     
     Dim item As IDriveItem
     For Each item In Model.items
-        If item.Id = Id Then
+        If item.id = id Then
             Set GetItemFromId = item
             Exit Function
         End If
@@ -240,7 +240,7 @@ Private Function IDriveItemCollectionToVariantArray() As Variant
         i = 1
         If Not Model.CurrentItem.Parent Is Nothing Then
             ReDim arr(arrItemsCount + 1, 3)
-            arr(1, 0) = Model.CurrentItem.Parent.Id
+            arr(1, 0) = Model.CurrentItem.Parent.id
             arr(1, 1) = ".."
             i = 2
         End If
@@ -256,13 +256,13 @@ Private Function IDriveItemCollectionToVariantArray() As Variant
         For Each item In Model.items
             If item.IsFile Then
                 Set fle = item
-                arr(i, 0) = fle.Id
+                arr(i, 0) = fle.id
                 arr(i, 1) = fle.name
                 arr(i, 2) = fle.Size \ 1024
                 arr(i, 3) = fle.LastModifiedTime
             Else
                 Set fld = item
-                arr(i, 0) = fld.Id
+                arr(i, 0) = fld.id
                 arr(i, 1) = fld.name
                 arr(i, 2) = ""
                 arr(i, 3) = ""

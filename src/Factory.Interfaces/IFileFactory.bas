@@ -14,7 +14,7 @@ Option Explicit
 Public Property Get Self() As IFileFactory
 End Property
 
-Public Function NewFile(ByVal Id As String, _
+Public Function NewFile(ByVal id As String, _
                         ByVal name As String, _
                         ByVal LastModifiedTime As Date, _
                         ByVal CreatedTime As Date, _

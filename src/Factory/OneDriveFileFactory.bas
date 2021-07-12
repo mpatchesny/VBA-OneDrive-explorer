@@ -19,7 +19,7 @@ Private Property Get IFileFactory_Self() As IFileFactory
     Set IFileFactory_Self = Self
 End Property
 
-Public Function NewFile(ByVal Id As String, _
+Public Function NewFile(ByVal id As String, _
                                     ByVal name As String, _
                                     ByVal LastModifiedTime As Date, _
                                     ByVal CreatedTime As Date, _
@@ -28,19 +28,19 @@ Public Function NewFile(ByVal Id As String, _
                                     ByVal path As String) As IFile
                                     
     With New OneDriveFile
-        .Init Id, name, LastModifiedTime, CreatedTime, Size, Parent, path
+        .Init id, name, LastModifiedTime, CreatedTime, Size, Parent, path
         Set NewFile = .Self
     End With
 
 End Function
-Private Function IFileFactory_NewFile(ByVal Id As String, _
+Private Function IFileFactory_NewFile(ByVal id As String, _
                                     ByVal name As String, _
                                     ByVal LastModifiedTime As Date, _
                                     ByVal CreatedTime As Date, _
                                     ByVal Size As String, _
                                     ByRef Parent As IDriveItem, _
                                     ByVal path As String) As IFile
-    Set IFileFactory_NewFile = NewFile(Id, name, LastModifiedTime, CreatedTime, Size, Parent, path)
+    Set IFileFactory_NewFile = NewFile(id, name, LastModifiedTime, CreatedTime, Size, Parent, path)
 End Function
 
 Public Function NewFileFromJsonString(ByVal json As String) As IFile

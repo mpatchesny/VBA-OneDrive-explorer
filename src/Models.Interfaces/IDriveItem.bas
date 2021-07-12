@@ -17,7 +17,7 @@ End Property
 Public Property Get Parent() As IDriveItem
 End Property
 
-Public Property Get Id() As String
+Public Property Get id() As String
 End Property
 
 Public Property Get IsFile() As Boolean

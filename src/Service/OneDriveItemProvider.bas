@@ -14,6 +14,7 @@ Implements IItemProvider
 
 Private fileFactory As IFileFactory
 Private folderFactory As IFolderFactory
+Private api As IApi
 
 Public Property Get Self() As OneDriveItemProvider
     Set Self = Me
@@ -22,11 +23,13 @@ Private Property Get IItemProvider_Self() As IItemProvider
     Set IItemProvider_Self = Self
 End Property
 
-Public Sub Init(ByRef cFileFactory As IFileFactory, ByRef cFolderFactory As IFolderFactory)
+Public Sub Init(ByRef cFileFactory As IFileFactory, ByRef cFolderFactory As IFolderFactory, ByRef cApi As IApi)
     GuardClauses.IsNothing cFileFactory, TypeName(cFileFactory)
     GuardClauses.IsNothing cFolderFactory, TypeName(cFolderFactory)
+    GuardClauses.IsNothing cApi, TypeName(cApi)
     Set fileFactory = cFileFactory
     Set folderFactory = cFolderFactory
+    Set api = cApi
 End Sub
 
 Public Function GetItem(ByVal path As String, Optional ByRef Parent As IDriveItem) As IDriveItem
@@ -35,7 +38,13 @@ Public Function GetItem(ByVal path As String, Optional ByRef Parent As IDriveIte
     Dim Self As String
     Self = TypeName(Me) & ".GetItem"
     
-    ' TODO
+    Dim json As String
+    json = api.GetItem(path)
+    
+    Dim item As IDriveItem
+    Set item = JsonToIDriveItem(json)
+    
+    Set GetItem = item
     
     Exit Function
     
@@ -65,17 +74,9 @@ Private Function IItemProvider_GetItems(ByRef Parent As IDriveItem) As Collectio
     Set IItemProvider_GetItems = GetItems(Parent)
 End Function
 
-Private Function FsoFileToOneDriveFile(ByRef fso As Scripting.FileSystemObject, ByVal path As String, ByRef Parent As IDriveItem) As IFile
-    Dim item As file
-    Set item = fso.GetFile(path)
-    Set FsoFileToOneDriveFile = fileFactory.NewFile(item.path, item.name, item.DateLastModified, item.DateCreated, item.Size, Parent, item.path)
+Private Function JsonToIDriveItem(ByVal json As String) As IDriveItem
+    Dim item As IDriveItem
+    Set JsonToIDriveItem = item
 End Function
-
-Private Function FsoFolderToOnedriveFolder(ByRef fso As Scripting.FileSystemObject, ByVal path As String, ByRef Parent As IDriveItem) As IFolder
-    Dim item As Folder
-    Set item = fso.GetFolder(path)
-    Set FsoFolderToOnedriveFolder = folderFactory.NewFolder(item.path, item.name, Parent, 0, item.path, Me)
-End Function
-
 
 

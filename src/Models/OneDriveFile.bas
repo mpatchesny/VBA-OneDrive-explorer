@@ -14,7 +14,7 @@ Implements IDriveItem
 Implements IFile
 
 Private Type TFields
-    Id As String
+    id As String
     name As String
     LastModifiedTime As Date
     CreatedTime As Date
@@ -24,17 +24,17 @@ Private Type TFields
 End Type
 Private this As TFields
 
-Public Property Get Id() As String
-    Id = this.Id
+Public Property Get id() As String
+    id = this.id
 End Property
 Private Property Get IDriveItem_Id() As String
-    IDriveItem_Id = Id
+    IDriveItem_Id = id
 End Property
 Private Property Get IFile_Id() As String
-    IFile_Id = Id
+    IFile_Id = id
 End Property
-Private Property Let Id(ByVal value As String)
-    this.Id = value
+Private Property Let id(ByVal value As String)
+    this.id = value
 End Property
 
 Public Property Get name() As String
@@ -134,7 +134,7 @@ Public Sub Init(ByVal cId As String, _
                 ByVal cSize As String, _
                 ByRef cParent As IDriveItem, _
                 ByVal cPath As String)
-    Id = cId
+    id = cId
     name = cName
     LastModifiedTime = cLastModifiedTime
     CreatedTime = cCreatedTime
