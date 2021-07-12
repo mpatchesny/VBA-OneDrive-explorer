@@ -3,3 +3,4 @@ open_bin.bat
 sqlite.bat
 ~$*.xlsm
 *.txt
+*.json
