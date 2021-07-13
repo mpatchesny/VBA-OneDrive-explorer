@@ -65,7 +65,7 @@ Public Function GetItem(ByVal Id As String, ByVal isRootFolder As Boolean) As St
             
         Else
             ' TODO: log bad response status
-            RaiseBadResponseError ResponseStatus
+            RaiseBadResponseError ResponseStatus, "GetItems"
             
         End If
     End With
@@ -74,7 +74,6 @@ Public Function GetItem(ByVal Id As String, ByVal isRootFolder As Boolean) As St
     
 ErrHandler:
     err.Raise err.Number, err.Source & ";" & Self, err.Description
-    
 
 End Function
 Private Function IApi_GetItem(ByVal Id As String, ByVal isRootFolder As Boolean) As String
@@ -100,7 +99,7 @@ Public Function GetItems(ByVal parentId As String) As String
             
         Else
             ' TODO: log bad response status
-            RaiseBadResponseError ResponseStatus
+            RaiseBadResponseError ResponseStatus, "GetItems"
             
         End If
     End With
@@ -168,35 +167,35 @@ ErrHandler:
     
 End Function
 
-Private Sub RaiseBadResponseError(ByVal resStatus As Long)
+Private Sub RaiseBadResponseError(ByVal resStatus As Long, ByVal methodName As String)
 
     Select Case resStatus
     Case 400
-        err.Raise ErrorCodes.BadRequest, Self, "Bad request"
+        err.Raise ErrorCodes.BadRequest, methodName, "Bad request"
         
     Case 401
-        err.Raise ErrorCodes.Unauthorized, Self, "Unauthorized"
+        err.Raise ErrorCodes.Unauthorized, methodName, "Unauthorized"
         
     Case 403
-        err.Raise ErrorCodes.Forbidden, Self, "Forbidden"
+        err.Raise ErrorCodes.Forbidden, methodName, "Forbidden"
         
     Case 404
-        err.Raise ErrorCodes.NotFound, Self, "Not found"
+        err.Raise ErrorCodes.NotFound, methodName, "Not found"
         
     Case 405
-        err.Raise ErrorCodes.MethodNotAllowed, Self, "Method not allowed"
+        err.Raise ErrorCodes.MethodNotAllowed, methodName, "Method not allowed"
         
     Case 406
-        err.Raise ErrorCodes.NotAcceptable, Self, "Not acceptable"
+        err.Raise ErrorCodes.NotAcceptable, methodName, "Not acceptable"
         
     Case 412
-        err.Raise ErrorCodes.PreconditionFailed, Self, "Precondition failed"
+        err.Raise ErrorCodes.PreconditionFailed, methodName, "Precondition failed"
     
     Case 500
-        err.Raise ErrorCodes.InternalServerError, Self, "Internal server error"
+        err.Raise ErrorCodes.InternalServerError, methodName, "Internal server error"
     
     Case Else
-        err.Raise ErrorCodes.BadResponse, Self, "Bad response status " & resStatus
+        err.Raise ErrorCodes.BadResponse, methodName, "Bad response status " & resStatus
         
     End Select
 
