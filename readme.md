@@ -11,9 +11,9 @@ In order this to work you have to set Files.Read permissions for Microsoft Graph
 ## Installation
 
 Import all files into macro enabled workbook. Add VBA references:
-Microsoft Scripting Runtime
-Microsoft VBScript Regular Expressions 5.5
-Microsoft WinHTTP Services, version 5.1
+- Microsoft Scripting Runtime
+- Microsoft VBScript Regular Expressions 5.5
+- Microsoft WinHTTP Services, version 5.1
 
 It uses VBA-JSON library, you can download latest version from here [VBA-JSON](https://github.com/VBA-tools/VBA-JSON/releases).
 
