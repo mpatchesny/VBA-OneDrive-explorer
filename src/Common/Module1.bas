@@ -2,39 +2,37 @@ Attribute VB_Name = "Module1"
 '@Folder("Common")
 Option Explicit
 
-Sub Test()
+Public Sub Start()
 
     On Error GoTo ErrHandler
-    Dim Self As String
-    Self = ".test"
-    
+
     Dim token As String
-    token = FileIO.ReadFileAlt(ThisWorkbook.Path & "\..\token.txt", "UTF-8")
-    
+    token = "" ' paste your token here
+
     Dim explorer As OneDriveFileExplorer
     Set explorer = New OneDriveFileExplorer
-    explorer.Display entryPointPath:="C:\Users\strielok\Desktop", token:=token, userformTitle:="Select file", allowMultiselect:=True, selectMode:=ESelectModeAll
-    
+    explorer.Display entryPointPath:="https://graph.microsoft.com/v1.0/me/drive/root/", token:=token, userformTitle:="Select file", allowMultiselect:=True, selectMode:=ESelectModeAll
+
     If Not explorer.IsCancelled Then
         Dim SelectedItems As Collection
         Set SelectedItems = explorer.SelectedItems
-        DebugPrintItemCol SelectedItems
     End If
-    
+
     Exit Sub
     
 ErrHandler:
-    err.Raise err.Number, err.Source & ";" & Self, err.Description
+    MsgBox "Error!" & vbCrLf & vbCrLf & "Error description: " & err.Description & vbCrLf & "Error source: " & err.Source, vbExclamation, "Error!"
 
 End Sub
 
-Private Function DebugPrintItemCol(ByRef col As Collection)
+Private Sub DebugPrintSelectedItems(ByRef col As Collection)
 
     If Not col Is Nothing Then
         Dim item As IDriveItem
         For Each item In col
-            Debug.Print item.Path
+            Debug.Print item.Id, item.Path
         Next item
     End If
     
-End Function
+End Sub
+
