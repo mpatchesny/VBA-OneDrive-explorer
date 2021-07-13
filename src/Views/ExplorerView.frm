@@ -306,25 +306,25 @@ Private Function GetListboxColumnsWidth(ByVal data As Variant) As Variant
         Next j
                     
         If max >= 0 And max < 5 Then
-            widths = Utils.ArrayAddItem(widths, 30)
+            widths = ArrayAddItem(widths, 30)
             
         ElseIf max >= 5 And max < 10 Then
-            widths = Utils.ArrayAddItem(widths, 60)
+            widths = ArrayAddItem(widths, 60)
             
         ElseIf max >= 10 And max < 20 Then
-            widths = Utils.ArrayAddItem(widths, 100)
+            widths = ArrayAddItem(widths, 100)
             
         ElseIf max >= 20 And max < 30 Then
-            widths = Utils.ArrayAddItem(widths, 130)
+            widths = ArrayAddItem(widths, 130)
             
         ElseIf max >= 30 And max < 50 Then
-            widths = Utils.ArrayAddItem(widths, 160)
+            widths = ArrayAddItem(widths, 160)
             
         ElseIf max >= 50 And max < 100 Then
-            widths = Utils.ArrayAddItem(widths, 190)
+            widths = ArrayAddItem(widths, 190)
             
         ElseIf max >= 100 Then
-            widths = Utils.ArrayAddItem(widths, 220)
+            widths = ArrayAddItem(widths, 220)
             
         End If
         
@@ -332,5 +332,21 @@ Private Function GetListboxColumnsWidth(ByVal data As Variant) As Variant
     Next i
     
     GetListboxColumnsWidth = widths
+
+End Function
+
+Private Function ArrayAddItem(ByVal arr As Variant, ByVal item As Variant) As Variant
+
+    Dim lngMax As Long
+    If IsEmpty(arr) Then
+        ReDim arr(0)
+        lngMax = 0
+    Else
+        lngMax = UBound(arr, 1) + 1
+        ReDim Preserve arr(lngMax)
+    End If
+    
+    arr(lngMax) = item
+    ArrayAddItem = arr
 
 End Function
