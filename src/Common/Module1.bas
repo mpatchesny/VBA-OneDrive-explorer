@@ -13,7 +13,7 @@ Sub Test()
     
     Dim explorer As OneDriveFileExplorer
     Set explorer = New OneDriveFileExplorer
-    explorer.Display "C:\Users\strielok\Desktop", token, "Select file", True, ESelectModeAll
+    explorer.Display entryPointPath:="C:\Users\strielok\Desktop", token:=token, userformTitle:="Select file", allowMultiselect:=True, selectMode:=ESelectModeAll
     
     If Not explorer.IsCancelled Then
         Dim SelectedItems As Collection
