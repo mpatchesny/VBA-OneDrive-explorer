@@ -2,6 +2,8 @@
 
 A very simple VBA OneDrive explorer. It lets you navigate through files and folders in OneDrive. Uses Microsoft Graph api.
 
+![screen-gif](./presentation.gif)
+
 ## Important
 
 In order this to work you have to set Files.Read permissions for Microsoft Graph, please see [How to set Microsoft Graph permissions](## How to set Microsoft Graph permissions).
