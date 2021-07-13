@@ -114,6 +114,10 @@ Private Sub UpdateView()
 End Sub
 
 Private Sub RefreshView()
+    On Error GoTo ErrHandler
+    Dim Self As String
+    Self = TypeName(Me) & ".RefreshView"
+    
     Dim fldr As IFolder
     Set fldr = Model.CurrentItem
     
@@ -122,6 +126,11 @@ Private Sub RefreshView()
     
     Model.SetItems col
     UpdateView
+    
+    Exit Sub
+    
+ErrHandler:
+    MsgBox "Error!" & vbCrLf & "Error description: " & err.Description & vbCrLf & "Error source: " & err.Source, vbExclamation, "Error!"
 End Sub
 
 Private Sub ChangeFolder()
