@@ -14,10 +14,10 @@ Option Explicit
 Public Property Get Self() As IFile
 End Property
 
-Public Property Get id() As String
+Public Property Get Id() As String
 End Property
 
-Public Property Get name() As String
+Public Property Get Name() As String
 End Property
 
 Public Property Get Size() As String
@@ -29,5 +29,5 @@ End Property
 Public Property Get LastModifiedTime() As Date
 End Property
 
-Public Property Get path() As String
+Public Property Get Path() As String
 End Property

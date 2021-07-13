@@ -14,7 +14,7 @@ Option Explicit
 Public Property Get Self() As IUser
 End Property
 
-Public Property Get id() As String
+Public Property Get Id() As String
 End Property
 
 Public Property Get DisplayName() As String

@@ -14,38 +14,38 @@ Implements IDriveItem
 Implements IFile
 
 Private Type TFields
-    id As String
-    name As String
+    Id As String
+    Name As String
     LastModifiedTime As Date
     CreatedTime As Date
     Size As String
-    parent As IDriveItem
-    path As String
+    Parent As IDriveItem
+    Path As String
     DownloadUrl As String
 End Type
 Private this As TFields
 
-Public Property Get id() As String
-    id = this.id
+Public Property Get Id() As String
+    Id = this.Id
 End Property
 Private Property Get IDriveItem_Id() As String
-    IDriveItem_Id = id
+    IDriveItem_Id = Id
 End Property
 Private Property Get IFile_Id() As String
-    IFile_Id = id
+    IFile_Id = Id
 End Property
-Private Property Let id(ByVal value As String)
-    this.id = value
+Private Property Let Id(ByVal value As String)
+    this.Id = value
 End Property
 
-Public Property Get name() As String
-    name = this.name
+Public Property Get Name() As String
+    Name = this.Name
 End Property
 Private Property Get IFile_Name() As String
-    IFile_Name = name
+    IFile_Name = Name
 End Property
-Private Property Let name(ByVal value As String)
-    this.name = value
+Private Property Let Name(ByVal value As String)
+    this.Name = value
 End Property
 
 Private Property Get CreatedTime() As Date
@@ -92,30 +92,30 @@ Private Property Get IDriveItem_IsFolder() As Boolean
     IDriveItem_IsFolder = IsFolder
 End Property
 
-Public Property Get parent() As IDriveItem
-    Set parent = this.parent
+Public Property Get Parent() As IDriveItem
+    Set Parent = this.Parent
 End Property
 Private Property Get IDriveItem_Parent() As IDriveItem
-    Set IDriveItem_Parent = parent
+    Set IDriveItem_Parent = Parent
 End Property
-Private Property Let parent(ByVal value As IDriveItem)
-    Set this.parent = value
+Private Property Let Parent(ByVal value As IDriveItem)
+    Set this.Parent = value
 End Property
 
-Public Property Get path() As String
-    path = this.path
+Public Property Get Path() As String
+    Path = this.Path
 End Property
 Private Property Get IFile_Path() As String
-    IFile_Path = path
+    IFile_Path = Path
 End Property
 Private Property Get IDriveItem_Path() As String
-    IDriveItem_Path = path
+    IDriveItem_Path = Path
 End Property
 Private Property Get IFolder_Path() As String
-    IFolder_Path = path
+    IFolder_Path = Path
 End Property
-Private Property Let path(ByVal value As String)
-    this.path = value
+Private Property Let Path(ByVal value As String)
+    this.Path = value
 End Property
 
 Public Property Get DownloadUrl() As String
@@ -143,14 +143,14 @@ Public Sub Init(ByVal cId As String, _
                 ByRef cParent As IDriveItem, _
                 ByVal cPath As String, _
                 ByVal cDownloadUrl As String)
-    id = cId
-    name = cName
+    Id = cId
+    Name = cName
     LastModifiedTime = cLastModifiedTime
     CreatedTime = cCreatedTime
-    parent = cParent
+    Parent = cParent
     ' if not isnumeric(csize) then
     Size = cSize
-    path = cPath
+    Path = cPath
     DownloadUrl = cDownloadUrl
 End Sub
 

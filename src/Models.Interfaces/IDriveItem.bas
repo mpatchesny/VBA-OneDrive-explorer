@@ -14,10 +14,10 @@ Option Explicit
 Public Property Get Self() As IDriveItem
 End Property
 
-Public Property Get parent() As IDriveItem
+Public Property Get Parent() As IDriveItem
 End Property
 
-Public Property Get id() As String
+Public Property Get Id() As String
 End Property
 
 Public Property Get IsFile() As Boolean
@@ -26,5 +26,5 @@ End Property
 Public Property Get IsFolder() As Boolean
 End Property
 
-Public Property Get path() As String
+Public Property Get Path() As String
 End Property

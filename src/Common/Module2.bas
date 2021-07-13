@@ -5,10 +5,10 @@ Option Explicit
 Public Sub ApiTest()
 
     Dim token As String
-    token = FileIO.ReadFileAlt(ThisWorkbook.path & "\..\token.txt", "UTF-8")
+    token = FileIO.ReadFileAlt(ThisWorkbook.Path & "\..\token.txt", "UTF-8")
     
     Dim url As String
-    url = "https://graph.microsoft.com/v1.0/me/"
+    url = "https://graph.microsoft.com/v1.0/me/drive/root/children"
     
     Dim request As WinHttp.WinHttpRequest
     Set request = New WinHttp.WinHttpRequest

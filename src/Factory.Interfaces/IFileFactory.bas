@@ -14,16 +14,16 @@ Option Explicit
 Public Property Get Self() As IFileFactory
 End Property
 
-Public Function NewFile(ByVal id As String, _
-                        ByVal name As String, _
+Public Function NewFile(ByVal Id As String, _
+                        ByVal Name As String, _
                         ByVal LastModifiedTime As Date, _
                         ByVal CreatedTime As Date, _
                         ByVal Size As String, _
-                        ByRef parent As IDriveItem, _
-                        ByVal path As String) As IFile
+                        ByRef Parent As IDriveItem, _
+                        ByVal Path As String) As IFile
 End Function
 
-Public Function NewFileFromDictionary(ByRef dict As Scripting.Dictionary, ByRef parent As IDriveItem) As IFile
+Public Function NewFileFromDictionary(ByRef dict As Scripting.Dictionary, ByRef Parent As IDriveItem) As IFile
 End Function
 
 
