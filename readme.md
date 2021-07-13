@@ -80,3 +80,8 @@ Go to [Graph Explorer](https://developer.microsoft.com/en-us/graph/graph-explore
 ## How to obtain Microsoft Graph token
 
 Go to [Graph Explorer](https://developer.microsoft.com/en-us/graph/graph-explorer) and log in. Click Access Token tab and copy token.
+
+## Known issues
+
+### Error: Unauthorized
+Token is expired or invalid, in order to fix this get new token.
