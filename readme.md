@@ -46,15 +46,15 @@ End Sub
 
 OneDriveFileExplorer.Display arguments:
 
-- __entryPointPath - path to root OneDrive folder
+- entryPointPath - path to root OneDrive folder
 
-- __token - Microsoft Graph token (see [How to obtain Microsoft Graph token](## How to obtain Microsoft Graph token))
+- token - Microsoft Graph token (see [How to obtain Microsoft Graph token](## How to obtain Microsoft Graph token))
 
-- __userformTitle - title with which the form will be displayed
+- userformTitle - title with which the form will be displayed
 
-- __allowMultiselect - whether selecting multiple items is allowed or not
+- allowMultiselect - whether selecting multiple items is allowed or not
 
-- __selectMode - if ESelectModeAll then you can select files and folder, if ESelectModeFolder then only folders, if ESelectModeFile then only files
+- selectMode - if ESelectModeAll then you can select files and folder, if ESelectModeFolder then only folders, if ESelectModeFile then only files
 
 SelectedItems collection is collection of IDriveItem objects. From IDriveItem object you can obtain id and path of drive item (that is file or folder), eg.:
 
