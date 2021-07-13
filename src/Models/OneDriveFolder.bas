@@ -14,36 +14,37 @@ Implements IDriveItem
 Implements IFolder
 
 Private Type TFields
-    id As String
-    name As String
-    parent As IDriveItem
+    Id As String
+    Name As String
+    Parent As IDriveItem
     ChildrenCount As Long
-    path As String
+    Path As String
+    LastModifiedTime As Date
     provider As IItemProvider
 End Type
 Private this As TFields
 
-Public Property Get id() As String
-    id = this.id
+Public Property Get Id() As String
+    Id = this.Id
 End Property
 Private Property Get IDriveItem_Id() As String
-    IDriveItem_Id = id
+    IDriveItem_Id = Id
 End Property
 Private Property Get IFolder_Id() As String
-    IFolder_Id = id
+    IFolder_Id = Id
 End Property
-Private Property Let id(ByVal value As String)
-    this.id = value
+Private Property Let Id(ByVal value As String)
+    this.Id = value
 End Property
 
-Public Property Get name() As String
-    name = this.name
+Public Property Get Name() As String
+    Name = this.Name
 End Property
 Private Property Get IFolder_Name() As String
-    IFolder_Name = name
+    IFolder_Name = Name
 End Property
-Private Property Let name(ByVal value As String)
-    this.name = value
+Private Property Let Name(ByVal value As String)
+    this.Name = value
 End Property
 
 Public Property Get IsFile() As Boolean
@@ -60,14 +61,14 @@ Private Property Get IDriveItem_IsFolder() As Boolean
     IDriveItem_IsFolder = IsFolder
 End Property
 
-Public Property Get parent() As IDriveItem
-    Set parent = this.parent
+Public Property Get Parent() As IDriveItem
+    Set Parent = this.Parent
 End Property
 Private Property Get IDriveItem_Parent() As IDriveItem
-    Set IDriveItem_Parent = parent
+    Set IDriveItem_Parent = Parent
 End Property
-Private Property Let parent(ByVal value As IDriveItem)
-    Set this.parent = value
+Private Property Let Parent(ByVal value As IDriveItem)
+    Set this.Parent = value
 End Property
 
 Public Property Get ChildrenCount() As Long
@@ -80,20 +81,30 @@ Private Property Let ChildrenCount(ByVal value As Long)
     this.ChildrenCount = value
 End Property
 
-Public Property Get path() As String
-    path = this.path
+Public Property Get LastModifiedTime() As Date
+    LastModifiedTime = this.LastModifiedTime
+End Property
+Private Property Get IFolder_LastModifiedTime() As Date
+    IFolder_LastModifiedTime = LastModifiedTime
+End Property
+Private Property Let LastModifiedTime(ByVal value As Date)
+    this.LastModifiedTime = value
+End Property
+
+Public Property Get Path() As String
+    Path = this.Path
 End Property
 Private Property Get IDriveItem_Path() As String
-    IDriveItem_Path = path
+    IDriveItem_Path = Path
 End Property
 Private Property Get IFile_Path() As String
-    IFile_Path = path
+    IFile_Path = Path
 End Property
 Private Property Get IFolder_Path() As String
-    IFolder_Path = path
+    IFolder_Path = Path
 End Property
-Private Property Let path(ByVal value As String)
-    this.path = value
+Private Property Let Path(ByVal value As String)
+    this.Path = value
 End Property
 
 Public Property Get Self() As OneDriveFolder
@@ -111,12 +122,14 @@ Public Sub Init(ByVal cId As String, _
                 ByRef cParent As IDriveItem, _
                 ByVal cChildrenCount As Long, _
                 ByVal cPath As String, _
+                ByVal cLastModifiedTime As Date, _
                 ByRef provider As IItemProvider)
-    id = cId
-    name = cName
-    parent = cParent
+    Id = cId
+    Name = cName
+    Parent = cParent
     ChildrenCount = cChildrenCount
-    path = cPath
+    Path = cPath
+    LastModifiedTime = cLastModifiedTime
     Set this.provider = provider
 End Sub
 

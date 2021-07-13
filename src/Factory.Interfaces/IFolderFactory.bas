@@ -14,15 +14,18 @@ Option Explicit
 Public Property Get Self() As IFolderFactory
 End Property
 
-Public Function NewFolder(ByVal id As String, _
-                        ByVal name As String, _
-                        ByRef parent As IDriveItem, _
+Public Function newFolder(ByVal Id As String, _
+                        ByVal Name As String, _
+                        ByRef Parent As IDriveItem, _
                         ByVal ChildrenCount As Long, _
-                        ByVal path As String, _
+                        ByVal Path As String, _
+                        ByVal LastModifiedTime As Date, _
                         ByRef provider As IItemProvider) As IFolder
 End Function
 
-Public Function NewFolderFromJsonString(ByVal json As String) As IFolder
+Public Function NewFolderFromDictionary(ByRef d As Scripting.IDictionary, _
+                                        ByRef Parent As IDriveItem, _
+                                        ByRef provider As IItemProvider) As IFolder
 End Function
 
 

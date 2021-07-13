@@ -14,18 +14,21 @@ Option Explicit
 Public Property Get Self() As IFolder
 End Property
 
-Public Property Get id() As String
+Public Property Get Id() As String
 End Property
 
-Public Property Get name() As String
+Public Property Get Name() As String
 End Property
 
 Public Property Get ChildrenCount() As Long
 End Property
 
+Public Property Get LastModifiedTime() As Date
+End Property
+
+Public Property Get Path() As String
+End Property
+
 Public Function GetChildren() As Collection
 End Function
-
-Public Property Get path() As String
-End Property
 
