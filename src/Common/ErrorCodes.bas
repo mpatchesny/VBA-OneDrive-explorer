@@ -11,6 +11,7 @@ Public Const NotSupported As Long = 10005
 Public Const NotImplemented As Long = 10006
 Public Const ValidationError As Long = 10007
 Public Const BadResponse As Long = 10008
+Public Const BadIDriveItemDictionary As Long = 10009
 
 Public Const BadRequest As Long = 10400
 Public Const Unauthorized As Long = 10401
