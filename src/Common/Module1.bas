@@ -8,14 +8,18 @@ Sub Test()
     Dim Self As String
     Self = ".test"
     
-    Dim SelectedItems As Collection
-    With New OneDriveFileExplorer
-        .Display "C:\Users\strielok\Desktop", "x", "Select file", True, ESelectModeAll
-        If Not .IsCancelled Then
-            Set SelectedItems = .SelectedItems
-            DebugPrintItemCol SelectedItems
-        End If
-    End With
+    Dim token As String
+    token = FileIO.ReadFileAlt(ThisWorkbook.Path & "\..\token.txt", "UTF-8")
+    
+    Dim explorer As OneDriveFileExplorer
+    Set explorer = New OneDriveFileExplorer
+    explorer.Display "C:\Users\strielok\Desktop", token, "Select file", True, ESelectModeAll
+    
+    If Not explorer.IsCancelled Then
+        Dim SelectedItems As Collection
+        Set SelectedItems = explorer.SelectedItems
+        DebugPrintItemCol SelectedItems
+    End If
     
     Exit Sub
     
@@ -29,7 +33,7 @@ Private Function DebugPrintItemCol(ByRef col As Collection)
     If Not col Is Nothing Then
         Dim item As IDriveItem
         For Each item In col
-            Debug.Print item.path
+            Debug.Print item.Path
         Next item
     End If
     
