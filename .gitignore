@@ -1,6 +1,7 @@
 /ignore
+/bin
 open_bin.bat
 sqlite.bat
-~$*.xlsm
+*.xlsm
 *.txt
 *.json
