@@ -39,9 +39,20 @@ Public Sub Display(ByVal entryPointPath As String, _
     GuardClauses.IsEmptyString token, "Token"
     GuardClauses.IsEmptyString userformTitle, "User form title"
     
+'    With New FileSystemItemProvider
+'        .Init New OneDriveFileFactory, New OneDriveFolderFactory
+'        Set provider = .Self
+'    End With
+
+    Dim api As IApi
+    With New MicrosoftGraphApi
+        .Init token
+        Set api = .Self
+    End With
+    
     Dim provider As IItemProvider
-    With New FileSystemItemProvider
-        .Init New OneDriveFileFactory, New OneDriveFolderFactory
+    With New OneDriveItemProvider
+        .Init New OneDriveFileFactory, New OneDriveFolderFactory, api
         Set provider = .Self
     End With
     
