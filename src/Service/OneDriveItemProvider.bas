@@ -85,7 +85,7 @@ Private Function JsonToIDriveItem(ByVal json As String, ByRef Parent As IDriveIt
     Self = TypeName(Me) & ".JsonToIDriveItem"
     
     Dim dict As Scripting.Dictionary
-    If Utils.TryParseJson(json, dict) Then
+    If TryParseJson(json, dict) Then
         Dim item As IDriveItem
         Set item = IDriveItemFromDictionary(dict, Parent)
         Set JsonToIDriveItem = item
@@ -110,7 +110,7 @@ Private Function JsonToIDriveItems(ByVal json As String, ByRef Parent As IDriveI
     Self = TypeName(Me) & ".JsonToIDriveItems"
     
     Dim dict As Scripting.Dictionary
-    If Utils.TryParseJson(json, dict) Then
+    If TryParseJson(json, dict) Then
         Dim resultCol As Collection
         Set resultCol = New Collection
         
@@ -174,3 +174,11 @@ ErrHandler:
     
 End Function
 
+Private Function TryParseJson(ByVal json As String, ByRef obj As Object) As Boolean
+    On Error GoTo ErrHandler
+    Set obj = ParseJson(json)
+    TryParseJson = True
+    Exit Function
+ErrHandler:
+    err.Clear
+End Function
