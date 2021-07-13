@@ -20,7 +20,7 @@ End Property
 Public Property Get Self() As IApi
 End Property
 
-Public Function GetItem(ByVal id As String) As String
+Public Function GetItem(ByVal Id As String, ByVal isRootFolder As Boolean) As String
 End Function
 
 Public Function GetItems(ByVal parentId As String) As String
