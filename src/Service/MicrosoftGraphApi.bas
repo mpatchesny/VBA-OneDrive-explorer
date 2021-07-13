@@ -12,19 +12,23 @@ Option Explicit
 
 Implements IApi
 
-Private cResponseStatus As Long
-Private cResponse As String
+Private Type TResponse
+    ResponseStatus As Long
+    ResponseText As String
+End Type
+
+Private thisResponse As TResponse
 Private token As String
 
 Public Property Get ResponseStatus() As Long
-    ResponseStatus = cResponseStatus
+    ResponseStatus = thisResponse.ResponseStatus
 End Property
 Private Property Get IApi_ResponseStatus() As Long
     IApi_ResponseStatus = ResponseStatus
 End Property
 
 Public Property Get Response() As String
-    Response = cResponse
+    Response = thisResponse.ResponseText
 End Property
 Private Property Get IApi_Response() As String
     IApi_Response = Response
@@ -42,27 +46,26 @@ Public Sub Init(ByVal cToken As String)
     token = cToken
 End Sub
 
-Public Function GetItem(ByVal id As String) As String
+Public Function GetItem(ByVal Id As String, ByVal isRootFolder As Boolean) As String
         
     On Error GoTo ErrHandler
     Dim Self As String
     Self = TypeName(Me) & ".GetItem"
     
     Dim query As String
-    query = ""
+    query = GetQuery(Id, isRootFolder)
     
-    With GetRequest(token, query)
-        .send ("")
-        cResponseStatus = .Status
-        cResponse = .ResponseText
-        
-        If cResponseStatus = 200 Then
-            Dim Response As String
-            Response = .ResponseText
-            GetItem = Response
+    Dim req As WinHttpRequest
+    Set req = GetRequest(token, query)
+    
+    thisResponse = ExecuteRequest(req)
+    With thisResponse
+        If ResponseStatus = 200 Then
+            GetItem = .ResponseText
             
         Else
-            RaiseBadResponseError cResponseStatus
+            ' TODO: log bad response status
+            RaiseBadResponseError ResponseStatus
             
         End If
     End With
@@ -74,8 +77,8 @@ ErrHandler:
     
 
 End Function
-Private Function IApi_GetItem(ByVal id As String) As String
-    IApi_GetItem = GetItem(id)
+Private Function IApi_GetItem(ByVal Id As String, ByVal isRootFolder As Boolean) As String
+    IApi_GetItem = GetItem(Id, isRootFolder)
 End Function
 
 Public Function GetItems(ByVal parentId As String) As String
@@ -85,20 +88,19 @@ Public Function GetItems(ByVal parentId As String) As String
     Self = TypeName(Me) & ".GetItems"
     
     Dim query As String
-    query = ""
+    query = GetQueryChildren(parentId)
     
-    With GetRequest(token, query)
-        .send ("")
-        cResponseStatus = .Status
-        cResponse = .ResponseText
-        
-        If cResponseStatus = 200 Then
-            Dim Response As String
-            Response = .ResponseText
-            GetItems = Response
+    Dim req As WinHttpRequest
+    Set req = GetRequest(token, query)
+    
+    thisResponse = ExecuteRequest(req)
+    With thisResponse
+        If ResponseStatus = 200 Then
+            GetItems = .ResponseText
             
         Else
-            RaiseBadResponseError cResponseStatus
+            ' TODO: log bad response status
+            RaiseBadResponseError ResponseStatus
             
         End If
     End With
@@ -113,8 +115,27 @@ Private Function IApi_GetItems(ByVal parentId As String) As String
     IApi_GetItems = GetItems(parentId)
 End Function
 
-Private Function GetRequest(ByVal cToken As String, ByVal cUrl As String) As WinHttpRequest
+Private Function GetQuery(ByVal Id As String, ByVal isRootFolder As Boolean) As String
+    ' FIXME: tym sie powinna zajmowaæ jakaœ osobna klasa, query provider albo coœ takiego
+    ' nie mo¿na zak³¹daæ, ze zawsze bêdziemy znajdowaæ siê w swoim onedrive, a nie np. w
+    ' elementach ktore s¹ nam udostêpnione
+    Dim query As String
+    If isRootFolder Then
+        query = "https://graph.microsoft.com/v1.0/me/drive/root/"
+    Else
+        query = "https://graph.microsoft.com/v1.0/me/drive/items/" & Id
+    End If
+    GetQuery = query
+End Function
 
+Private Function GetQueryChildren(ByVal Id As String) As String
+    Dim query As String
+    query = GetQuery(Id, False)
+    query = query & "/children"
+    GetQueryChildren = query
+End Function
+
+Private Function GetRequest(ByVal cToken As String, ByVal cUrl As String) As WinHttpRequest
     Dim request As WinHttp.WinHttpRequest
     Set request = New WinHttp.WinHttpRequest
     With request
@@ -123,7 +144,28 @@ Private Function GetRequest(ByVal cToken As String, ByVal cUrl As String) As Win
         .setRequestHeader "Authorization", "Bearer " & cToken
     End With
     Set GetRequest = request
+End Function
 
+Private Function ExecuteRequest(ByRef req As WinHttpRequest) As TResponse
+
+    On Error GoTo ErrHandler
+    Dim Self As String
+    Self = TypeName(Me) & ".ExecuteRequest"
+
+    With req
+        .send ("")
+        
+        Dim t As TResponse
+        t.ResponseStatus = .Status
+        t.ResponseText = .ResponseText
+        ExecuteRequest = t
+    End With
+    
+    Exit Function
+    
+ErrHandler:
+    err.Raise err.Number, err.Source & ";" & Self, err.Description
+    
 End Function
 
 Private Sub RaiseBadResponseError(ByVal resStatus As Long)
