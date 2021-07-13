@@ -4,7 +4,7 @@ A very simple VBA OneDrive explorer. It lets you navigate through files and fold
 
 ## Important
 
-In order this to work you have to set Files.Read permissions for Microsoft Graph, please (see [How to set Microsoft Graph permissions](## How to set Microsoft Graph permissions))
+In order this to work you have to set Files.Read permissions for Microsoft Graph, please see [How to set Microsoft Graph permissions](## How to set Microsoft Graph permissions).
 
 ## Installation
 
