@@ -122,7 +122,7 @@ Private Function JsonToIDriveItems(ByVal json As String, ByRef Parent As IDriveI
             Dim d As Scripting.Dictionary
             For Each d In col
                 Set item = IDriveItemFromDictionary(d, Parent)
-                resultCol.Add item
+                If Not item Is Nothing Then resultCol.Add item
             Next d
         End If
         
@@ -159,7 +159,8 @@ Private Function IDriveItemFromDictionary(ByRef dict As Scripting.Dictionary, By
             Set IDriveItemFromDictionary = fle
             
         Else
-            err.Raise ErrorCodes.BadIDriveItemDictionary, Self, "Dictionary item 'file' or 'folder' not found"
+            ' This could be OneNote notebook
+            'err.Raise ErrorCodes.BadIDriveItemDictionary, Self, "Dictionary item 'file' or 'folder' not found"
         
         End If
     Else
