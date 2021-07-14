@@ -39,11 +39,6 @@ Public Sub Display(ByVal entryPointPath As String, _
     GuardClauses.IsEmptyString token, "Token"
     GuardClauses.IsEmptyString userformTitle, "User form title"
     
-'    With New FileSystemItemProvider
-'        .Init New OneDriveFileFactory, New OneDriveFolderFactory
-'        Set provider = .Self
-'    End With
-
     Dim api As IApi
     With New MicrosoftGraphApi
         .Init token
@@ -57,7 +52,7 @@ Public Sub Display(ByVal entryPointPath As String, _
     End With
     
     Dim entryPoint As IDriveItem
-    Set entryPoint = provider.GetItem(entryPointPath)
+    Set entryPoint = provider.GetItemByPath(entryPointPath)
 
     Dim controller As IExplorerController
     With New ExplorerControllerFactory
