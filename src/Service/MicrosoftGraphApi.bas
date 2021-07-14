@@ -46,14 +46,14 @@ Public Sub Init(ByVal cToken As String)
     token = cToken
 End Sub
 
-Public Function GetItem(ByVal Id As String, ByVal isRootFolder As Boolean) As String
+Public Function GetItem(ByVal Id As String, ByVal DriveId As String) As String
         
     On Error GoTo ErrHandler
     Dim Self As String
     Self = TypeName(Me) & ".GetItem"
     
     Dim query As String
-    query = GetQuery(Id, isRootFolder)
+    query = GetQuery(Id, DriveId)
     
     Dim req As WinHttpRequest
     Set req = GetRequest(token, query)
@@ -76,18 +76,18 @@ ErrHandler:
     err.Raise err.Number, err.Source & ";" & Self, err.Description
 
 End Function
-Private Function IApi_GetItem(ByVal Id As String, ByVal isRootFolder As Boolean) As String
-    IApi_GetItem = GetItem(Id, isRootFolder)
+Private Function IApi_GetItem(ByVal Id As String, ByVal DriveId As String) As String
+    IApi_GetItem = GetItem(Id, DriveId)
 End Function
 
-Public Function GetItems(ByVal parentId As String) As String
+Public Function GetItems(ByVal parentId As String, ByVal DriveId As String) As String
         
     On Error GoTo ErrHandler
     Dim Self As String
     Self = TypeName(Me) & ".GetItems"
     
     Dim query As String
-    query = GetQueryChildren(parentId)
+    query = GetQueryChildren(parentId, DriveId)
     
     Dim req As WinHttpRequest
     Set req = GetRequest(token, query)
@@ -110,26 +110,55 @@ ErrHandler:
     err.Raise err.Number, err.Source & ";" & Self, err.Description
     
 End Function
-Private Function IApi_GetItems(ByVal parentId As String) As String
-    IApi_GetItems = GetItems(parentId)
+Private Function IApi_GetItems(ByVal parentId As String, ByVal DriveId As String) As String
+    IApi_GetItems = GetItems(parentId, DriveId)
 End Function
 
-Private Function GetQuery(ByVal Id As String, ByVal isRootFolder As Boolean) As String
+Public Function ExecuteQuery(ByVal query As String) As String
+        
+    On Error GoTo ErrHandler
+    Dim Self As String
+    Self = TypeName(Me) & ".GetItems"
+    
+    Dim req As WinHttpRequest
+    Set req = GetRequest(token, query)
+    
+    thisResponse = ExecuteRequest(req)
+    With thisResponse
+        If ResponseStatus = 200 Then
+            ExecuteQuery = .ResponseText
+            
+        Else
+            ' TODO: log bad response status
+            RaiseBadResponseError ResponseStatus, "GetItems"
+            
+        End If
+    End With
+    
+    Exit Function
+    
+ErrHandler:
+    err.Raise err.Number, err.Source & ";" & Self, err.Description
+    
+End Function
+Private Function IApi_ExecuteQuery(ByVal query As String) As String
+    IApi_ExecuteQuery = ExecuteQuery(query)
+End Function
+
+Private Function GetQuery(ByVal Id As String, ByVal DriveId As String) As String
     ' FIXME: tym sie powinna zajmowaæ jakaœ osobna klasa, query provider albo coœ takiego
     ' nie mo¿na zak³¹daæ, ze zawsze bêdziemy znajdowaæ siê w swoim onedrive, a nie np. w
     ' elementach ktore s¹ nam udostêpnione
     Dim query As String
-    If isRootFolder Then
-        query = "https://graph.microsoft.com/v1.0/me/drive/root/"
-    Else
-        query = "https://graph.microsoft.com/v1.0/me/drive/items/" & Id
-    End If
+    query = "https://graph.microsoft.com/v1.0/me/drives/{DriveId}/items/{Id}"
+    query = Replace(query, "{DriveId}", DriveId)
+    query = Replace(query, "{Id}", Id)
     GetQuery = query
 End Function
 
-Private Function GetQueryChildren(ByVal Id As String) As String
+Private Function GetQueryChildren(ByVal Id As String, ByVal DriveId As String) As String
     Dim query As String
-    query = GetQuery(Id, False)
+    query = GetQuery(Id, DriveId)
     query = query & "/children"
     GetQueryChildren = query
 End Function
