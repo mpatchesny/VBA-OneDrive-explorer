@@ -238,6 +238,11 @@ Private Function GetItemFromId(ByVal Id As String) As IDriveItem
 End Function
 
 Private Function IDriveItemCollectionToVariantArray() As Variant
+
+    On Error GoTo ErrHandler
+    Dim Self As String
+    Self = TypeName(Me) & ".IDriveItemCollectionToVariantArray"
+
     Dim arr As Variant
     If Not Model.items Is Nothing Then
         Dim arrItemsCount As Long
@@ -290,6 +295,12 @@ Private Function IDriveItemCollectionToVariantArray() As Variant
     End If
     
     IDriveItemCollectionToVariantArray = arr
+    
+    Exit Function
+    
+ErrHandler:
+    err.Raise err.Number, err.Source & ";" & Self, err.Description
+    
 End Function
 
 Private Function GetListboxColumnsWidth(ByVal data As Variant) As Variant
