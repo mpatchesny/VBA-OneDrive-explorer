@@ -8,6 +8,7 @@ Public Sub Start()
 
     Dim token As String
     token = "" ' paste your token here
+    token = FileIO.ReadFileAlt(ThisWorkbook.Path & "/../token.txt", "UTF-8")
 
     Dim explorer As OneDriveFileExplorer
     Set explorer = New OneDriveFileExplorer
@@ -16,6 +17,7 @@ Public Sub Start()
     If Not explorer.IsCancelled Then
         Dim SelectedItems As Collection
         Set SelectedItems = explorer.SelectedItems
+        DebugPrintSelectedItems SelectedItems
     End If
 
     Exit Sub

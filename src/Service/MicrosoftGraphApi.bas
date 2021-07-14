@@ -152,7 +152,7 @@ Private Function ExecuteRequest(ByRef req As WinHttpRequest) As TResponse
     Self = TypeName(Me) & ".ExecuteRequest"
 
     With req
-        .send ("")
+        .Send ("")
         
         Dim t As TResponse
         t.ResponseStatus = .Status
