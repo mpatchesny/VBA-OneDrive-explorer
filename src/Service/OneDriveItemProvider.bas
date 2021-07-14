@@ -32,18 +32,21 @@ Public Sub Init(ByRef cFileFactory As IFileFactory, ByRef cFolderFactory As IFol
     Set api = cApi
 End Sub
 
-Public Function GetItem(ByVal Id As String, Optional ByRef Parent As IDriveItem) As IDriveItem
+Public Function GetItemById(ByVal Id As String, Optional ByRef Parent As IDriveItem) As IDriveItem
 
     On Error GoTo ErrHandler
     Dim Self As String
     Self = TypeName(Me) & ".GetItem"
     
+    Dim DriveId As String
+    If Not Parent Is Nothing Then DriveId = Parent.DriveId
+    
     Dim json As String
-    json = api.GetItem(Id, Parent Is Nothing)
+    json = api.GetItem(Id, DriveId)
     
     Dim item As IDriveItem
     Set item = JsonToIDriveItem(json, Parent)
-    Set GetItem = item
+    Set GetItemById = item
     
     Exit Function
     
@@ -51,8 +54,31 @@ ErrHandler:
     err.Raise err.Number, err.Source & ";" & Self, err.Description
 
 End Function
-Private Function IItemProvider_GetItem(ByVal Id As String, Optional ByRef Parent As IDriveItem) As IDriveItem
-    Set IItemProvider_GetItem = GetItem(Id, Parent)
+Private Function IItemProvider_GetItemById(ByVal Id As String, Optional ByRef Parent As IDriveItem) As IDriveItem
+    Set IItemProvider_GetItemById = GetItemById(Id, Parent)
+End Function
+
+Public Function GetItemByPath(ByVal Path As String, Optional ByRef Parent As IDriveItem) As IDriveItem
+
+    On Error GoTo ErrHandler
+    Dim Self As String
+    Self = TypeName(Me) & ".GetItem"
+    
+    Dim json As String
+    json = api.ExecuteQuery(Path)
+    
+    Dim item As IDriveItem
+    Set item = JsonToIDriveItem(json, Parent)
+    Set GetItemByPath = item
+    
+    Exit Function
+    
+ErrHandler:
+    err.Raise err.Number, err.Source & ";" & Self, err.Description
+
+End Function
+Private Function IItemProvider_GetItemByPath(ByVal Path As String, Optional ByRef Parent As IDriveItem) As IDriveItem
+    Set IItemProvider_GetItemByPath = GetItemByPath(Path, Parent)
 End Function
 
 Public Function GetItems(ByRef Parent As IDriveItem) As Collection
@@ -62,7 +88,7 @@ Public Function GetItems(ByRef Parent As IDriveItem) As Collection
     Self = TypeName(Me) & ".GetItems"
     
     Dim json As String
-    json = api.GetItems(Parent.Id)
+    json = api.GetItems(Parent.Id, Parent.DriveId)
     
     Dim items As Collection
     Set items = JsonToIDriveItems(json, Parent)

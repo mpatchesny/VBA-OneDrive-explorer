@@ -18,6 +18,7 @@ Private folderFactory As IFolderFactory
 Public Property Get Self() As FileSystemItemProvider
     Set Self = Me
 End Property
+
 Private Property Get IItemProvider_Self() As IItemProvider
     Set IItemProvider_Self = Self
 End Property
@@ -31,11 +32,27 @@ Public Sub Init(ByRef cFileFactory As IFileFactory, ByRef cFolderFactory As IFol
     Set folderFactory = cFolderFactory
 End Sub
 
-Public Function GetItem(ByVal Path As String, Optional ByRef Parent As IDriveItem) As IDriveItem
+Public Function GetItemById(ByVal Id As String, Optional ByRef Parent As IDriveItem) As IDriveItem
 
     On Error GoTo ErrHandler
     Dim Self As String
-    Self = TypeName(Me) & ".GetItem"
+    Self = TypeName(Me) & ".GetItemById"
+    err.Raise ErrorCodes.NotImplemented, Self, "Method GetItemById is invalid in this context"
+    Exit Function
+    
+ErrHandler:
+    err.Raise err.Number, err.Source & ";" & Self, err.Description
+
+End Function
+Private Function IItemProvider_GetItemById(ByVal Id As String, Optional ByRef Parent As IDriveItem) As IDriveItem
+    Set IItemProvider_GetItemById = GetItemById(Id, Parent)
+End Function
+
+Public Function GetItemByPath(ByVal Path As String, Optional ByRef Parent As IDriveItem) As IDriveItem
+
+    On Error GoTo ErrHandler
+    Dim Self As String
+    Self = TypeName(Me) & ".GetItemByPath"
     
     Dim fso As Scripting.FileSystemObject
     Set fso = New Scripting.FileSystemObject
@@ -56,7 +73,7 @@ Public Function GetItem(ByVal Path As String, Optional ByRef Parent As IDriveIte
         
     End If
     
-    Set GetItem = item
+    Set GetItemByPath = item
     
     Exit Function
     
@@ -64,8 +81,8 @@ ErrHandler:
     err.Raise err.Number, err.Source & ";" & Self, err.Description
 
 End Function
-Private Function IItemProvider_GetItem(ByVal Path As String, Optional ByRef Parent As IDriveItem) As IDriveItem
-    Set IItemProvider_GetItem = GetItem(Path, Parent)
+Private Function IItemProvider_GetItemByPath(ByVal Path As String, Optional Parent As IDriveItem) As IDriveItem
+    IItemProvider_GetItemByPath = GetItemByPath(Path, Parent)
 End Function
 
 Public Function GetItems(ByRef Parent As IDriveItem) As Collection
@@ -108,13 +125,13 @@ End Function
 Private Function FsoFileToOneDriveFile(ByRef fso As Scripting.FileSystemObject, ByVal Path As String, ByRef Parent As IDriveItem) As IFile
     Dim item As file
     Set item = fso.GetFile(Path)
-    Set FsoFileToOneDriveFile = fileFactory.NewFile(item.Path, item.Name, item.DateLastModified, item.DateCreated, item.Size, Parent, item.Path)
+    Set FsoFileToOneDriveFile = fileFactory.NewFile(item.Path, fso.GetDrive(Path), item.Name, item.DateLastModified, item.DateCreated, item.Size, Parent, item.Path)
 End Function
 
 Private Function FsoFolderToOnedriveFolder(ByRef fso As Scripting.FileSystemObject, ByVal Path As String, ByRef Parent As IDriveItem) As IFolder
     Dim item As Folder
     Set item = fso.GetFolder(Path)
-    Set FsoFolderToOnedriveFolder = folderFactory.newFolder(item.Path, item.Name, Parent, 0, item.Path, item.DateLastModified, Me)
+    Set FsoFolderToOnedriveFolder = folderFactory.newFolder(item.Path, fso.GetDrive(Path), item.Name, Parent, 0, item.Path, item.DateLastModified, Me)
 End Function
 
 

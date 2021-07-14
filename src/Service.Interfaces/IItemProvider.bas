@@ -14,7 +14,10 @@ Option Explicit
 Public Property Get Self() As IItemProvider
 End Property
 
-Public Function GetItem(ByVal Path As String, Optional ByRef Parent As IDriveItem) As IDriveItem
+Public Function GetItemById(ByVal Id As String, Optional ByRef Parent As IDriveItem) As IDriveItem
+End Function
+
+Public Function GetItemByPath(ByVal Path As String, Optional ByRef Parent As IDriveItem) As IDriveItem
 End Function
 
 Public Function GetItems(ByRef Parent As IDriveItem) As Collection
