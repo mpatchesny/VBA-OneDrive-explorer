@@ -17,6 +17,9 @@ End Property
 Public Property Get Id() As String
 End Property
 
+Public Property Get DriveId() As String
+End Property
+
 Public Property Get Name() As String
 End Property
 

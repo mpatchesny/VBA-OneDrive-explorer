@@ -20,27 +20,29 @@ Private Property Get IFileFactory_Self() As IFileFactory
 End Property
 
 Public Function NewFile(ByVal Id As String, _
-                                    ByVal Name As String, _
-                                    ByVal LastModifiedTime As Date, _
-                                    ByVal CreatedTime As Date, _
-                                    ByVal Size As String, _
-                                    ByRef Parent As IDriveItem, _
-                                    ByVal Path As String) As IFile
+                        ByVal DriveId As String, _
+                        ByVal Name As String, _
+                        ByVal LastModifiedTime As Date, _
+                        ByVal CreatedTime As Date, _
+                        ByVal Size As String, _
+                        ByRef Parent As IDriveItem, _
+                        ByVal Path As String) As IFile
                                     
     With New OneDriveFile
-        .Init Id, Name, LastModifiedTime, CreatedTime, Size, Parent, Path, ""
+        .Init Id, DriveId, Name, LastModifiedTime, CreatedTime, Size, Parent, Path, ""
         Set NewFile = .Self
     End With
 
 End Function
 Private Function IFileFactory_NewFile(ByVal Id As String, _
+                                    ByVal DriveId As String, _
                                     ByVal Name As String, _
                                     ByVal LastModifiedTime As Date, _
                                     ByVal CreatedTime As Date, _
                                     ByVal Size As String, _
                                     ByRef Parent As IDriveItem, _
                                     ByVal Path As String) As IFile
-    Set IFileFactory_NewFile = NewFile(Id, Name, LastModifiedTime, CreatedTime, Size, Parent, Path)
+    Set IFileFactory_NewFile = NewFile(Id, DriveId, Name, LastModifiedTime, CreatedTime, Size, Parent, Path)
 End Function
 
 Public Function NewFileFromDictionary(ByRef d As Scripting.Dictionary, ByRef Parent As IDriveItem) As IFile
@@ -59,8 +61,12 @@ Public Function NewFileFromDictionary(ByRef d As Scripting.Dictionary, ByRef Par
         created = JsonConverter.ParseIso(d("createdDateTime"))
     End If
     
+    Dim parentRef As Scripting.Dictionary
+    Set parentRef = d("parentReference")
+    If parentRef Is Nothing Then Set parentRef = New Scripting.Dictionary
+    
     With New OneDriveFile
-        .Init d("id"), d("name"), lastModified, created, d("size"), Parent, d("webUrl"), d("@microsoft.graph.downloadUrl")
+        .Init d("id"), parentRef("driveId"), d("name"), lastModified, created, d("size"), Parent, d("webUrl"), d("@microsoft.graph.downloadUrl")
         Set NewFileFromDictionary = .Self
     End With
     

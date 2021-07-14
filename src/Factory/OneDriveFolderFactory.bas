@@ -20,6 +20,7 @@ Private Property Get IFolderFactory_Self() As IFolderFactory
 End Property
 
 Public Function newFolder(ByVal Id As String, _
+                        ByVal DriveId As String, _
                         ByVal Name As String, _
                         ByRef Parent As IDriveItem, _
                         ByVal ChildrenCount As Long, _
@@ -27,18 +28,19 @@ Public Function newFolder(ByVal Id As String, _
                         ByVal LastModifiedTime As Date, _
                         ByRef provider As IItemProvider) As IFolder
     With New OneDriveFolder
-        .Init Id, Name, Parent, ChildrenCount, Path, LastModifiedTime, provider
+        .Init Id, DriveId, Name, Parent, ChildrenCount, Path, LastModifiedTime, provider
         Set newFolder = .Self
     End With
 End Function
 Private Function IFolderFactory_NewFolder(ByVal Id As String, _
-                                        ByVal Name As String, _
-                                        ByRef Parent As IDriveItem, _
-                                        ByVal ChildrenCount As Long, _
-                                        ByVal Path As String, _
-                                        ByVal LastModifiedTime As Date, _
-                                        ByRef provider As IItemProvider) As IFolder
-    Set IFolderFactory_NewFolder = newFolder(Id, Name, Parent, ChildrenCount, Path, LastModifiedTime, provider)
+                                            ByVal DriveId As String, _
+                                            ByVal Name As String, _
+                                            ByRef Parent As IDriveItem, _
+                                            ByVal ChildrenCount As Long, _
+                                            ByVal Path As String, _
+                                            ByVal LastModifiedTime As Date, _
+                                            ByRef provider As IItemProvider) As IFolder
+    Set IFolderFactory_NewFolder = newFolder(Id, DriveId, Name, Parent, ChildrenCount, Path, LastModifiedTime, provider)
 End Function
 
 Public Function NewFolderFromDictionary(ByRef d As Scripting.IDictionary, _
@@ -49,17 +51,31 @@ Public Function NewFolderFromDictionary(ByRef d As Scripting.IDictionary, _
     Dim Self As String
     Self = TypeName(Me) & ".NewFolderFromDictionary"
     
-    Dim dFolder As Scripting.Dictionary
-    Set dFolder = d("folder")
-    If dFolder Is Nothing Then Set dFolder = New Scripting.Dictionary
+    Dim ChildCount As Long
+    If d.Exists("folder") Then
+        ChildCount = d("folder")("childCount")
+    End If
     
     Dim lastModified As Date
     If d.Exists("lastModifiedDateTime") Then
         lastModified = JsonConverter.ParseIso(d("lastModifiedDateTime"))
     End If
     
+    Dim tempDict As Scripting.Dictionary
+    Set tempDict = d
+    If d.Exists("remoteItem") Then
+        Set tempDict = d("remoteItem")
+    End If
+    
+    Dim DriveId As String
+    If Not tempDict Is Nothing Then
+        If tempDict.Exists("parentReference") Then
+            DriveId = tempDict("parentReference")("driveId")
+        End If
+    End If
+    
     With New OneDriveFolder
-        .Init d("id"), d("name"), Parent, dFolder("childCount"), d("webUrl"), lastModified, provider
+        .Init d("id"), DriveId, d("name"), Parent, ChildCount, d("webUrl"), lastModified, provider
         Set NewFolderFromDictionary = .Self
     End With
     

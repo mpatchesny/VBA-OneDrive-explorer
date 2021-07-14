@@ -15,6 +15,7 @@ Implements IFile
 
 Private Type TFields
     Id As String
+    DriveId As String
     Name As String
     LastModifiedTime As Date
     CreatedTime As Date
@@ -36,6 +37,19 @@ Private Property Get IFile_Id() As String
 End Property
 Private Property Let Id(ByVal value As String)
     this.Id = value
+End Property
+
+Public Property Get DriveId() As String
+    DriveId = this.DriveId
+End Property
+Private Property Get IDriveItem_DriveId() As String
+    IDriveItem_DriveId = DriveId
+End Property
+Private Property Get IFile_DriveId() As String
+    IFile_DriveId = DriveId
+End Property
+Private Property Let DriveId(ByVal value As String)
+    this.DriveId = value
 End Property
 
 Public Property Get Name() As String
@@ -136,6 +150,7 @@ Private Property Get IFile_Self() As IFile
 End Property
 
 Public Sub Init(ByVal cId As String, _
+                ByVal cDriveId As String, _
                 ByVal cName As String, _
                 ByVal cLastModifiedTime As Date, _
                 ByVal cCreatedTime As Date, _
@@ -144,6 +159,7 @@ Public Sub Init(ByVal cId As String, _
                 ByVal cPath As String, _
                 ByVal cDownloadUrl As String)
     Id = cId
+    DriveId = cDriveId
     Name = cName
     LastModifiedTime = cLastModifiedTime
     CreatedTime = cCreatedTime

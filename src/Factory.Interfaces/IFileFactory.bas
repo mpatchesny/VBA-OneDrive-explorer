@@ -15,6 +15,7 @@ Public Property Get Self() As IFileFactory
 End Property
 
 Public Function NewFile(ByVal Id As String, _
+                        ByVal DriveId As String, _
                         ByVal Name As String, _
                         ByVal LastModifiedTime As Date, _
                         ByVal CreatedTime As Date, _

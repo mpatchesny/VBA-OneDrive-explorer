@@ -15,12 +15,13 @@ Public Property Get Self() As IFolderFactory
 End Property
 
 Public Function newFolder(ByVal Id As String, _
-                        ByVal Name As String, _
-                        ByRef Parent As IDriveItem, _
-                        ByVal ChildrenCount As Long, _
-                        ByVal Path As String, _
-                        ByVal LastModifiedTime As Date, _
-                        ByRef provider As IItemProvider) As IFolder
+                            ByVal DriveId As String, _
+                            ByVal Name As String, _
+                            ByRef Parent As IDriveItem, _
+                            ByVal ChildrenCount As Long, _
+                            ByVal Path As String, _
+                            ByVal LastModifiedTime As Date, _
+                            ByRef provider As IItemProvider) As IFolder
 End Function
 
 Public Function NewFolderFromDictionary(ByRef d As Scripting.IDictionary, _

@@ -15,6 +15,7 @@ Implements IFolder
 
 Private Type TFields
     Id As String
+    DriveId As String
     Name As String
     Parent As IDriveItem
     ChildrenCount As Long
@@ -35,6 +36,19 @@ Private Property Get IFolder_Id() As String
 End Property
 Private Property Let Id(ByVal value As String)
     this.Id = value
+End Property
+
+Public Property Get DriveId() As String
+    DriveId = this.DriveId
+End Property
+Private Property Get IDriveItem_DriveId() As String
+    IDriveItem_DriveId = DriveId
+End Property
+Private Property Get IFolder_DriveId() As String
+    IFolder_DriveId = DriveId
+End Property
+Private Property Let DriveId(ByVal value As String)
+    this.DriveId = value
 End Property
 
 Public Property Get Name() As String
@@ -118,6 +132,7 @@ Private Property Get IFolder_Self() As IFolder
 End Property
 
 Public Sub Init(ByVal cId As String, _
+                ByVal cDriveId As String, _
                 ByVal cName As String, _
                 ByRef cParent As IDriveItem, _
                 ByVal cChildrenCount As Long, _
@@ -125,6 +140,7 @@ Public Sub Init(ByVal cId As String, _
                 ByVal cLastModifiedTime As Date, _
                 ByRef provider As IItemProvider)
     Id = cId
+    DriveId = cDriveId
     Name = cName
     Parent = cParent
     ChildrenCount = cChildrenCount
