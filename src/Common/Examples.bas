@@ -17,7 +17,7 @@ Public Sub ExampleGetToken()
     Dim settings As RequestSettings
     With New RequestSettings
         .ClientId = "client_id_from_microsoft_azure_portal"
-        .ClientSecret = "client_id_from_microsoft_azure_portal"
+        .ClientSecret = "client_secret_from_microsoft_azure_portal"
         .GrantType = "authorization_code"
         .RedirectUri = "http%3A%2F%2Flocalhost%2F"
         .ResponseMode = "query"
@@ -34,7 +34,7 @@ Public Sub ExampleGetToken()
         .Init "https://login.microsoftonline.com/{tenant}/oauth2/v2.0/authorize?client_id={client_id}&response_type=code&redirect_uri={redirect_uri}&response_mode=query&scope={scope}&state={state}", _
               "https://login.microsoftonline.com/{tenant}/oauth2/v2.0/token", _
               "client_id={client_id}&client_secret={client_secret}&scope={scope}&code={code}&redirect_uri={redirect_uri}&grant_type={grant_type}", _
-              100, settings
+            LoginTimeout:=100, settings:=settings
         .GetToken
         Token = .Token
         RefreshToken = .RefreshToken
