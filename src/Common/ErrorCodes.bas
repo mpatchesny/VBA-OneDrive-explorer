@@ -12,6 +12,9 @@ Public Const NotImplemented As Long = 10006
 Public Const ValidationError As Long = 10007
 Public Const BadResponse As Long = 10008
 Public Const BadIDriveItemDictionary As Long = 10009
+Public Const TimeoutExceeded As Long = 10010
+Public Const FailToGetCodeFromUrl As Long = 10010
+Public Const InternetExplorerIsClosed As Long = 10011
 
 Public Const BadRequest As Long = 10400
 Public Const Unauthorized As Long = 10401
