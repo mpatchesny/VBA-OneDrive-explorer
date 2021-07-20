@@ -76,13 +76,13 @@ See Examples module for more examples.
 
 ## How to set Microsoft Graph permissions
 
-Register your application in Azure Portal [docs] (https://docs.microsoft.com/en-us/graph/auth-register-app-v2) and set permissions (User.Read, Files.Read.All) for registered application.
+Register your application in Azure Portal [docs](https://docs.microsoft.com/en-us/graph/auth-register-app-v2) and set permissions (User.Read, Files.Read.All) for registered application.
 
 If you do not want to get token via VBA go to [Graph Explorer](https://developer.microsoft.com/en-us/graph/graph-explorer) and log in. Click three dots menu button next to your account name and click Select permissions -> select Files and click Consent.
 
 ## How to obtain Microsoft Graph token
 
-To obtain token via VBA register your application in Azure Portal [docs] (https://docs.microsoft.com/en-us/graph/auth-register-app-v2). As a redirect uri use http://localhost (Web) and https://login.microsoftonline.com/common/oauth2/nativeclient (Mobile and desktop applications). Copy your client ID and client secret into VBA code:
+To obtain token via VBA register your application in Azure Portal [docs](https://docs.microsoft.com/en-us/graph/auth-register-app-v2). As a redirect uri use http://localhost (Web) and https://login.microsoftonline.com/common/oauth2/nativeclient (Mobile and desktop applications). Copy your client ID and client secret into VBA code:
 
 ```vb
 Dim settings As RequestSettings
