@@ -26,7 +26,7 @@ Public Property Get Self() As OneDriveFileExplorer
 End Property
 
 Public Sub Display(ByVal entryPointPath As String, _
-                   ByVal token As String, _
+                   ByVal Token As String, _
                    ByVal userformTitle As String, _
                    ByVal allowMultiselect As Boolean, _
                    ByVal selectMode As ESelectMode)
@@ -36,12 +36,12 @@ Public Sub Display(ByVal entryPointPath As String, _
     Self = TypeName(Me) & ".Display"
     
     GuardClauses.IsEmptyString entryPointPath, "Entry point"
-    GuardClauses.IsEmptyString token, "Token"
+    GuardClauses.IsEmptyString Token, "Token"
     GuardClauses.IsEmptyString userformTitle, "User form title"
     
     Dim api As IApi
     With New MicrosoftGraphApi
-        .Init token
+        .Init Token
         Set api = .Self
     End With
     
