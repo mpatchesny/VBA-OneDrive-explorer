@@ -26,10 +26,10 @@ Public Function NewFile(ByVal Id As String, _
                         ByVal CreatedTime As Date, _
                         ByVal Size As String, _
                         ByRef Parent As IDriveItem, _
-                        ByVal Path As String) As IFile
+                        ByVal path As String) As IFile
                                     
     With New OneDriveFile
-        .Init Id, DriveId, Name, LastModifiedTime, CreatedTime, Size, Parent, Path, ""
+        .Init Id, DriveId, Name, LastModifiedTime, CreatedTime, Size, Parent, path, ""
         Set NewFile = .Self
     End With
 
@@ -41,8 +41,8 @@ Private Function IFileFactory_NewFile(ByVal Id As String, _
                                     ByVal CreatedTime As Date, _
                                     ByVal Size As String, _
                                     ByRef Parent As IDriveItem, _
-                                    ByVal Path As String) As IFile
-    Set IFileFactory_NewFile = NewFile(Id, DriveId, Name, LastModifiedTime, CreatedTime, Size, Parent, Path)
+                                    ByVal path As String) As IFile
+    Set IFileFactory_NewFile = NewFile(Id, DriveId, Name, LastModifiedTime, CreatedTime, Size, Parent, path)
 End Function
 
 Public Function NewFileFromDictionary(ByRef d As Scripting.Dictionary, ByRef Parent As IDriveItem) As IFile

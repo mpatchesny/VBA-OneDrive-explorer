@@ -17,7 +17,7 @@ End Property
 Public Property Get items() As Collection
 End Property
 
-Public Property Get CurrentItem() As IDriveItem
+Public Property Get currentItem() As IDriveItem
 End Property
 
 Public Property Get SelectedItems() As Collection

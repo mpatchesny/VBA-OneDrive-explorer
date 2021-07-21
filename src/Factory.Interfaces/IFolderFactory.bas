@@ -19,7 +19,7 @@ Public Function newFolder(ByVal Id As String, _
                             ByVal Name As String, _
                             ByRef Parent As IDriveItem, _
                             ByVal ChildrenCount As Long, _
-                            ByVal Path As String, _
+                            ByVal path As String, _
                             ByVal LastModifiedTime As Date, _
                             ByRef provider As IItemProvider) As IFolder
 End Function

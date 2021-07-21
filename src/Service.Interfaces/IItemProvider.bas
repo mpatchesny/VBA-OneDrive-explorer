@@ -17,7 +17,7 @@ End Property
 Public Function GetItemById(ByVal Id As String, Optional ByRef Parent As IDriveItem) As IDriveItem
 End Function
 
-Public Function GetItemByPath(ByVal Path As String, Optional ByRef Parent As IDriveItem) As IDriveItem
+Public Function GetItemByPath(ByVal path As String, Optional ByRef Parent As IDriveItem) As IDriveItem
 End Function
 
 Public Function GetItems(ByRef Parent As IDriveItem) As Collection

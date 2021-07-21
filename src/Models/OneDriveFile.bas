@@ -21,7 +21,7 @@ Private Type TFields
     CreatedTime As Date
     Size As String
     Parent As IDriveItem
-    Path As String
+    path As String
     DownloadUrl As String
 End Type
 Private this As TFields
@@ -116,20 +116,20 @@ Private Property Let Parent(ByVal value As IDriveItem)
     Set this.Parent = value
 End Property
 
-Public Property Get Path() As String
-    Path = this.Path
+Public Property Get path() As String
+    path = this.path
 End Property
 Private Property Get IFile_Path() As String
-    IFile_Path = Path
+    IFile_Path = path
 End Property
 Private Property Get IDriveItem_Path() As String
-    IDriveItem_Path = Path
+    IDriveItem_Path = path
 End Property
 Private Property Get IFolder_Path() As String
-    IFolder_Path = Path
+    IFolder_Path = path
 End Property
-Private Property Let Path(ByVal value As String)
-    this.Path = value
+Private Property Let path(ByVal value As String)
+    this.path = value
 End Property
 
 Public Property Get DownloadUrl() As String
@@ -166,7 +166,7 @@ Public Sub Init(ByVal cId As String, _
     Parent = cParent
     ' if not isnumeric(csize) then
     Size = cSize
-    Path = cPath
+    path = cPath
     DownloadUrl = cDownloadUrl
 End Sub
 

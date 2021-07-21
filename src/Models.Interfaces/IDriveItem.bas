@@ -29,5 +29,5 @@ End Property
 Public Property Get IsFolder() As Boolean
 End Property
 
-Public Property Get Path() As String
+Public Property Get path() As String
 End Property

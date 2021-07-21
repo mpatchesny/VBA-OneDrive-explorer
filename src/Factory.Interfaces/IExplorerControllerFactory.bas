@@ -15,7 +15,7 @@ Public Property Get Self() As IExplorerControllerFactory
 End Property
 
 Public Function NewExplorerController(ByRef entryPoint As IDriveItem, _
-                                      ByVal userformTitle As String, _
+                                      ByVal userFormTitle As String, _
                                       ByVal multiselect As Boolean, _
                                       Optional ByVal selectMode As ESelectMode = ESelectMode.ESelectModeAll) As IExplorerController
 End Function

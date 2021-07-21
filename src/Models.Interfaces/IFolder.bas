@@ -29,7 +29,7 @@ End Property
 Public Property Get LastModifiedTime() As Date
 End Property
 
-Public Property Get Path() As String
+Public Property Get path() As String
 End Property
 
 Public Function GetChildren() As Collection

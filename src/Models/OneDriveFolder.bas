@@ -19,7 +19,7 @@ Private Type TFields
     Name As String
     Parent As IDriveItem
     ChildrenCount As Long
-    Path As String
+    path As String
     LastModifiedTime As Date
     provider As IItemProvider
 End Type
@@ -105,20 +105,20 @@ Private Property Let LastModifiedTime(ByVal value As Date)
     this.LastModifiedTime = value
 End Property
 
-Public Property Get Path() As String
-    Path = this.Path
+Public Property Get path() As String
+    path = this.path
 End Property
 Private Property Get IDriveItem_Path() As String
-    IDriveItem_Path = Path
+    IDriveItem_Path = path
 End Property
 Private Property Get IFile_Path() As String
-    IFile_Path = Path
+    IFile_Path = path
 End Property
 Private Property Get IFolder_Path() As String
-    IFolder_Path = Path
+    IFolder_Path = path
 End Property
-Private Property Let Path(ByVal value As String)
-    this.Path = value
+Private Property Let path(ByVal value As String)
+    this.path = value
 End Property
 
 Public Property Get Self() As OneDriveFolder
@@ -144,7 +144,7 @@ Public Sub Init(ByVal cId As String, _
     Name = cName
     Parent = cParent
     ChildrenCount = cChildrenCount
-    Path = cPath
+    path = cPath
     LastModifiedTime = cLastModifiedTime
     Set this.provider = provider
 End Sub

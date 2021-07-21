@@ -14,7 +14,7 @@ Implements IExplorerViewModel
 
 Private Type TFields
     items As Collection
-    CurrentItem As IDriveItem
+    currentItem As IDriveItem
     SelectedItems As Collection
 End Type
 Private this As TFields
@@ -36,14 +36,14 @@ Private Property Let items(ByRef value As Collection)
     Set this.items = value
 End Property
 
-Public Property Get CurrentItem() As IDriveItem
-    Set CurrentItem = this.CurrentItem
+Public Property Get currentItem() As IDriveItem
+    Set currentItem = this.currentItem
 End Property
 Private Property Get IExplorerViewModel_CurrentItem() As IDriveItem
-    Set IExplorerViewModel_CurrentItem = CurrentItem
+    Set IExplorerViewModel_CurrentItem = currentItem
 End Property
-Private Property Let CurrentItem(ByRef value As IDriveItem)
-    Set this.CurrentItem = value
+Private Property Let currentItem(ByRef value As IDriveItem)
+    Set this.currentItem = value
 End Property
 
 Public Property Get SelectedItems() As Collection
@@ -56,7 +56,7 @@ Private Property Let SelectedItems(ByRef value As Collection)
     Set this.SelectedItems = value
 End Property
 
-Public Sub Init(ByRef cItems As Collection, ByRef cCurrentItem As IDriveItem, ByRef cSelectedItems As Collection)
+Public Sub Init(ByRef cItems As Collection, ByRef cCurrentItem As Collection, ByRef cSelectedItems As Collection)
     SetItems cItems
     SetCurrentItem cCurrentItem
     SetSelectedItems cSelectedItems
@@ -70,7 +70,7 @@ Private Sub IExplorerViewModel_SetItems(value As Collection)
 End Sub
 
 Public Sub SetCurrentItem(ByRef value As IDriveItem)
-    CurrentItem = value
+    currentItem = value
 End Sub
 Private Sub IExplorerViewModel_SetCurrentItem(value As IDriveItem)
     SetCurrentItem value

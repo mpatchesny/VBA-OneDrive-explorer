@@ -21,7 +21,7 @@ Public Function NewFile(ByVal Id As String, _
                         ByVal CreatedTime As Date, _
                         ByVal Size As String, _
                         ByRef Parent As IDriveItem, _
-                        ByVal Path As String) As IFile
+                        ByVal path As String) As IFile
 End Function
 
 Public Function NewFileFromDictionary(ByRef dict As Scripting.Dictionary, ByRef Parent As IDriveItem) As IFile
