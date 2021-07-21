@@ -110,7 +110,7 @@ Private Sub UpdateView()
     widths = GetListboxColumnsWidth(data)
     widths(0) = 0 ' hide ID column
     ListBox.ColumnWidths = Join(widths, ";")
-    PathTextBox.text = Model.CurrentItem.Path
+    PathTextBox.text = Model.currentItem.path
 End Sub
 
 Private Sub RefreshView()
@@ -118,13 +118,18 @@ Private Sub RefreshView()
     Dim Self As String
     Self = TypeName(Me) & ".RefreshView"
     
-    Dim fldr As IFolder
-    Set fldr = Model.CurrentItem
+    Dim items As Collection
+    If Not Model.items Is Nothing Then
+        Set items = Model.items
+        
+    Else
+        Dim fld As IFolder
+        Set fld = Model.currentItem
+        Set items = fld.GetChildren
+        
+    End If
     
-    Dim col As Collection
-    Set col = fldr.GetChildren
-    
-    Model.SetItems col
+    Model.SetItems items
     UpdateView
     
     Exit Sub
@@ -144,6 +149,7 @@ Private Sub ChangeFolder()
             
             If item.IsFolder Then
                 Model.SetCurrentItem item
+                Model.SetItems Nothing
                 RefreshView
             End If
         End If
@@ -168,10 +174,6 @@ Private Sub UserForm_QueryClose(cCancel As Integer, CloseMode As Integer)
         cCancel = True
         Cancel
     End If
-End Sub
-
-Private Sub UserForm_Resize()
-    ' TODO
 End Sub
 
 ' Helpers
@@ -202,6 +204,8 @@ Private Function FilterSelectedItems(ByRef col As Collection, ByVal mode As ESel
         Set col2 = col
     
     Else
+        Set col2 = New Collection
+        
         Dim item As IDriveItem
         For Each item In col
             Select Case mode
@@ -221,9 +225,9 @@ Private Function FilterSelectedItems(ByRef col As Collection, ByVal mode As ESel
 End Function
 
 Private Function GetItemFromId(ByVal Id As String) As IDriveItem
-    If Not Model.CurrentItem.Parent Is Nothing Then
-        If Id = Model.CurrentItem.Parent.Id Then
-            Set GetItemFromId = Model.CurrentItem.Parent
+    If Not Model.currentItem.Parent Is Nothing Then
+        If Id = Model.currentItem.Parent.Id Then
+            Set GetItemFromId = Model.currentItem.Parent
             Exit Function
         End If
     End If
@@ -252,9 +256,9 @@ Private Function IDriveItemCollectionToVariantArray() As Variant
 
         Dim i As Long
         i = 1
-        If Not Model.CurrentItem.Parent Is Nothing Then
+        If Not Model.currentItem.Parent Is Nothing Then
             ReDim arr(arrItemsCount + 1, 3)
-            arr(1, 0) = Model.CurrentItem.Parent.Id
+            arr(1, 0) = Model.currentItem.Parent.Id
             arr(1, 1) = ".."
             i = 2
         End If

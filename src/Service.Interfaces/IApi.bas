@@ -20,11 +20,11 @@ End Property
 Public Property Get Self() As IApi
 End Property
 
-Public Function GetItem(ByVal Id As String, ByVal DriveId As String) As String
+Public Function GetItemById(ByVal Id As String, ByVal DriveId As String) As String
 End Function
 
-Public Function GetItems(ByVal parentId As String, ByVal DriveId As String) As String
+Public Function GetItemByPath(ByVal path As String) As String
 End Function
 
-Public Function ExecuteQuery(ByVal query As String) As String
+Public Function GetItems(ByRef Parent As IDriveItem) As String
 End Function

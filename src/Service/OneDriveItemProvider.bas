@@ -36,13 +36,13 @@ Public Function GetItemById(ByVal Id As String, Optional ByRef Parent As IDriveI
 
     On Error GoTo ErrHandler
     Dim Self As String
-    Self = TypeName(Me) & ".GetItem"
+    Self = TypeName(Me) & ".GetItemById"
     
     Dim DriveId As String
     If Not Parent Is Nothing Then DriveId = Parent.DriveId
     
     Dim json As String
-    json = api.GetItem(Id, DriveId)
+    json = api.GetItemById(Id, DriveId)
     
     Dim item As IDriveItem
     Set item = JsonToIDriveItem(json, Parent)
@@ -58,14 +58,14 @@ Private Function IItemProvider_GetItemById(ByVal Id As String, Optional ByRef Pa
     Set IItemProvider_GetItemById = GetItemById(Id, Parent)
 End Function
 
-Public Function GetItemByPath(ByVal Path As String, Optional ByRef Parent As IDriveItem) As IDriveItem
+Public Function GetItemByPath(ByVal path As String, Optional ByRef Parent As IDriveItem) As IDriveItem
 
     On Error GoTo ErrHandler
     Dim Self As String
-    Self = TypeName(Me) & ".GetItem"
+    Self = TypeName(Me) & ".GetItemByPath"
     
     Dim json As String
-    json = api.ExecuteQuery(Path)
+    json = api.GetItemByPath(path)
     
     Dim item As IDriveItem
     Set item = JsonToIDriveItem(json, Parent)
@@ -77,8 +77,8 @@ ErrHandler:
     err.Raise err.Number, err.Source & ";" & Self, err.Description
 
 End Function
-Private Function IItemProvider_GetItemByPath(ByVal Path As String, Optional ByRef Parent As IDriveItem) As IDriveItem
-    Set IItemProvider_GetItemByPath = GetItemByPath(Path, Parent)
+Private Function IItemProvider_GetItemByPath(ByVal path As String, Optional ByRef Parent As IDriveItem) As IDriveItem
+    Set IItemProvider_GetItemByPath = GetItemByPath(path, Parent)
 End Function
 
 Public Function GetItems(ByRef Parent As IDriveItem) As Collection
@@ -88,7 +88,7 @@ Public Function GetItems(ByRef Parent As IDriveItem) As Collection
     Self = TypeName(Me) & ".GetItems"
     
     Dim json As String
-    json = api.GetItems(Parent.Id, Parent.DriveId)
+    json = api.GetItems(Parent)
     
     Dim items As Collection
     Set items = JsonToIDriveItems(json, Parent)

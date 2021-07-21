@@ -19,37 +19,31 @@ Private Property Get IExplorerControllerFactory_Self() As IExplorerControllerFac
     Set IExplorerControllerFactory_Self = Self
 End Property
 
-Public Function NewExplorerController(ByRef entryPoint As IDriveItem, _
-                                      ByVal userformTitle As String, _
+Public Function NewExplorerController(ByRef entryPoint As IExplorerViewModel, _
+                                      ByVal userFormTitle As String, _
                                       ByVal multiselect As Boolean, _
                                       Optional ByVal selectMode As ESelectMode = ESelectMode.ESelectModeAll) As IExplorerController
                                       
     GuardClauses.IsNothing entryPoint, "Entry point"
-    GuardClauses.IsEmptyString userformTitle, "User form title"
-                                        
-    Dim Model As IExplorerViewModel
-    With New ExplorerViewModel
-        .Init Nothing, entryPoint, Nothing
-        Set Model = .Self
-    End With
+    GuardClauses.IsEmptyString userFormTitle, "User form title"
     
     Dim View As IExplorerView
     With New ExplorerView
-        .Init Model, userformTitle, multiselect, selectMode
+        .Init entryPoint, userFormTitle, multiselect, selectMode
         Set View = .Self
     End With
     
     With New ExplorerController
-        .Init View, Model
+        .Init View, entryPoint
         Set NewExplorerController = .Self
     End With
                                         
 End Function
 
 Private Function IExplorerControllerFactory_NewExplorerController(ByRef entryPoint As IDriveItem, _
-                                                                 ByVal userformTitle As String, _
+                                                                 ByVal userFormTitle As String, _
                                                                  ByVal multiselect As Boolean, _
                                                                  Optional ByVal selectMode As ESelectMode = ESelectMode.ESelectModeAll) As IExplorerController
-    Set IExplorerControllerFactory_NewExplorerController = NewExplorerController(entryPoint, userformTitle, multiselect, selectMode)
+    Set IExplorerControllerFactory_NewExplorerController = NewExplorerController(entryPoint, userFormTitle, multiselect, selectMode)
 End Function
 

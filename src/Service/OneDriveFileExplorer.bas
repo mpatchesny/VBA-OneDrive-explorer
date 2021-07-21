@@ -25,9 +25,9 @@ Public Property Get Self() As OneDriveFileExplorer
     Set Self = Me
 End Property
 
-Public Sub Display(ByVal entryPointPath As String, _
+Public Sub Display(ByRef entryPointPath As String, _
                    ByVal Token As String, _
-                   ByVal userformTitle As String, _
+                   ByVal userFormTitle As String, _
                    ByVal allowMultiselect As Boolean, _
                    ByVal selectMode As ESelectMode)
     
@@ -35,9 +35,9 @@ Public Sub Display(ByVal entryPointPath As String, _
     Dim Self As String
     Self = TypeName(Me) & ".Display"
     
-    GuardClauses.IsEmptyString entryPointPath, "Entry point"
+    GuardClauses.IsEmptyString entryPointPath, "Entry point path"
     GuardClauses.IsEmptyString Token, "Token"
-    GuardClauses.IsEmptyString userformTitle, "User form title"
+    GuardClauses.IsEmptyString userFormTitle, "User form title"
     
     Dim api As IApi
     With New MicrosoftGraphApi
@@ -51,12 +51,16 @@ Public Sub Display(ByVal entryPointPath As String, _
         Set provider = .Self
     End With
     
-    Dim entryPoint As IDriveItem
-    Set entryPoint = provider.GetItemByPath(entryPointPath)
+    Dim currentItem As IDriveItem
+    Set currentItem = provider.GetItemByPath(entryPointPath, currentItem)
+    
+    Dim entryPoint As IExplorerViewModel
+    Set entryPoint = New ExplorerViewModel
+    entryPoint.SetCurrentItem currentItem
 
     Dim controller As IExplorerController
     With New ExplorerControllerFactory
-        Set controller = .NewExplorerController(entryPoint, userformTitle, allowMultiselect, selectMode)
+        Set controller = .NewExplorerController(entryPoint, userFormTitle, allowMultiselect, selectMode)
     End With
     
     controller.Display
