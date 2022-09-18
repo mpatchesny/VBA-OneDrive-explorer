@@ -51,12 +51,8 @@ Public Sub Display(ByRef entryPointPath As String, _
         Set provider = .Self
     End With
     
-    Dim currentItem As IDriveItem
-    Set currentItem = provider.GetItemByPath(entryPointPath, currentItem)
-    
-    Dim entryPoint As IExplorerViewModel
-    Set entryPoint = New ExplorerViewModel
-    entryPoint.SetCurrentItem currentItem
+    Dim entryPoint  As IExplorerViewModel
+    Set entryPoint = GetIExplorerViewModel(entryPointPath, provider)
 
     Dim controller As IExplorerController
     With New ExplorerControllerFactory
@@ -71,7 +67,45 @@ Public Sub Display(ByRef entryPointPath As String, _
     
 ErrHandler:
     Dim msg As String
-    msg = "Error: " & err.Description & " (" & err.Source & ")"
+    msg = "Error: " & Err.Description & " (" & Err.Source & ")"
     MsgBox msg, vbExclamation, "Error"
     
 End Sub
+
+Private Function GetIExplorerViewModel(ByVal entryPointPath As String, ByRef provider As IItemProvider) As IExplorerViewModel
+
+    Dim parent As IDriveItem
+    With New OneDriveFolder
+        .Init "0", "0", "Root folder", Nothing, 0, entryPointPath, Now, provider
+        Set parent = .Self
+    End With
+
+    Dim items As Collection
+    Set items = GetItemsSafe(provider, parent)
+    
+    If items Is Nothing Then
+        Dim item As IDriveItem
+        Set item = provider.GetItemByPath(entryPointPath)
+        Dim fld As IFolder
+        Set fld = item
+        Set items = fld.GetChildren
+    End If
+    
+    Dim entryPoint As IExplorerViewModel
+    Set entryPoint = New ExplorerViewModel
+    entryPoint.SetItems items
+    Set GetIExplorerViewModel = entryPoint
+
+End Function
+
+Private Function GetItemsSafe(ByRef provider As IItemProvider, ByRef parent As IDriveItem) As Collection
+    
+    On Error GoTo ErrHandler
+    Dim items As Collection
+    Set items = provider.GetItems(parent)
+    Exit Function
+    
+ErrHandler:
+    Err.Clear
+    
+End Function
