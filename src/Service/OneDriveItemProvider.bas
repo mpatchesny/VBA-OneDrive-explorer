@@ -32,33 +32,33 @@ Public Sub Init(ByRef cFileFactory As IFileFactory, ByRef cFolderFactory As IFol
     Set api = cApi
 End Sub
 
-Public Function GetItemById(ByVal Id As String, Optional ByRef Parent As IDriveItem) As IDriveItem
+Public Function GetItemById(ByVal Id As String, Optional ByRef parent As IDriveItem) As IDriveItem
 
     On Error GoTo ErrHandler
     Dim Self As String
     Self = TypeName(Me) & ".GetItemById"
     
     Dim DriveId As String
-    If Not Parent Is Nothing Then DriveId = Parent.DriveId
+    If Not parent Is Nothing Then DriveId = parent.DriveId
     
     Dim json As String
     json = api.GetItemById(Id, DriveId)
     
     Dim item As IDriveItem
-    Set item = JsonToIDriveItem(json, Parent)
+    Set item = JsonToIDriveItem(json, parent)
     Set GetItemById = item
     
     Exit Function
     
 ErrHandler:
-    err.Raise err.Number, err.Source & ";" & Self, err.Description
+    Err.Raise Err.Number, Err.Source & ";" & Self, Err.Description
 
 End Function
-Private Function IItemProvider_GetItemById(ByVal Id As String, Optional ByRef Parent As IDriveItem) As IDriveItem
-    Set IItemProvider_GetItemById = GetItemById(Id, Parent)
+Private Function IItemProvider_GetItemById(ByVal Id As String, Optional ByRef parent As IDriveItem) As IDriveItem
+    Set IItemProvider_GetItemById = GetItemById(Id, parent)
 End Function
 
-Public Function GetItemByPath(ByVal path As String, Optional ByRef Parent As IDriveItem) As IDriveItem
+Public Function GetItemByPath(ByVal path As String, Optional ByRef parent As IDriveItem) As IDriveItem
 
     On Error GoTo ErrHandler
     Dim Self As String
@@ -68,43 +68,43 @@ Public Function GetItemByPath(ByVal path As String, Optional ByRef Parent As IDr
     json = api.GetItemByPath(path)
     
     Dim item As IDriveItem
-    Set item = JsonToIDriveItem(json, Parent)
+    Set item = JsonToIDriveItem(json, parent)
     Set GetItemByPath = item
     
     Exit Function
     
 ErrHandler:
-    err.Raise err.Number, err.Source & ";" & Self, err.Description
+    Err.Raise Err.Number, Err.Source & ";" & Self, Err.Description
 
 End Function
-Private Function IItemProvider_GetItemByPath(ByVal path As String, Optional ByRef Parent As IDriveItem) As IDriveItem
-    Set IItemProvider_GetItemByPath = GetItemByPath(path, Parent)
+Private Function IItemProvider_GetItemByPath(ByVal path As String, Optional ByRef parent As IDriveItem) As IDriveItem
+    Set IItemProvider_GetItemByPath = GetItemByPath(path, parent)
 End Function
 
-Public Function GetItems(ByRef Parent As IDriveItem) As Collection
+Public Function GetItems(ByRef parent As IDriveItem) As Collection
 
     On Error GoTo ErrHandler
     Dim Self As String
     Self = TypeName(Me) & ".GetItems"
     
     Dim json As String
-    json = api.GetItems(Parent)
+    json = api.GetItems(parent)
     
     Dim items As Collection
-    Set items = JsonToIDriveItems(json, Parent)
+    Set items = JsonToIDriveItems(json, parent)
     Set GetItems = items
     
     Exit Function
     
 ErrHandler:
-    err.Raise err.Number, err.Source & ";" & Self, err.Description
+    Err.Raise Err.Number, Err.Source & ";" & Self, Err.Description
 
 End Function
-Private Function IItemProvider_GetItems(ByRef Parent As IDriveItem) As Collection
-    Set IItemProvider_GetItems = GetItems(Parent)
+Private Function IItemProvider_GetItems(ByRef parent As IDriveItem) As Collection
+    Set IItemProvider_GetItems = GetItems(parent)
 End Function
 
-Private Function JsonToIDriveItem(ByVal json As String, ByRef Parent As IDriveItem) As IDriveItem
+Private Function JsonToIDriveItem(ByVal json As String, ByRef parent As IDriveItem) As IDriveItem
     
     On Error GoTo ErrHandler
     Dim Self As String
@@ -113,11 +113,11 @@ Private Function JsonToIDriveItem(ByVal json As String, ByRef Parent As IDriveIt
     Dim dict As Scripting.Dictionary
     If TryParseJson(json, dict) Then
         Dim item As IDriveItem
-        Set item = IDriveItemFromDictionary(dict, Parent)
+        Set item = IDriveItemFromDictionary(dict, parent)
         Set JsonToIDriveItem = item
         
     Else
-        err.Raise ErrorCodes.JsonParseError, Self, "Bad json response"
+        Err.Raise ErrorCodes.JsonParseError, Self, "Bad json response"
         ' TODO: log bad json
     
     End If
@@ -125,11 +125,11 @@ Private Function JsonToIDriveItem(ByVal json As String, ByRef Parent As IDriveIt
     Exit Function
     
 ErrHandler:
-    err.Raise err.Number, err.Source & ";" & Self, err.Description
+    Err.Raise Err.Number, Err.Source & ";" & Self, Err.Description
     
 End Function
 
-Private Function JsonToIDriveItems(ByVal json As String, ByRef Parent As IDriveItem) As Collection
+Private Function JsonToIDriveItems(ByVal json As String, ByRef parent As IDriveItem) As Collection
     
     On Error GoTo ErrHandler
     Dim Self As String
@@ -147,15 +147,17 @@ Private Function JsonToIDriveItems(ByVal json As String, ByRef Parent As IDriveI
         If Not col Is Nothing Then
             Dim d As Scripting.Dictionary
             For Each d In col
-                Set item = IDriveItemFromDictionary(d, Parent)
-                If Not item Is Nothing Then resultCol.Add item
+                Set item = IDriveItemFromDictionary(d, parent)
+                If Not item Is Nothing Then
+                    resultCol.Add item
+                End If
             Next d
         End If
         
         Set JsonToIDriveItems = resultCol
     
     Else
-        err.Raise ErrorCodes.JsonParseError, Self, "Bad json response"
+        Err.Raise ErrorCodes.JsonParseError, Self, "Bad json response"
         ' TODO: log bad json
     
     End If
@@ -163,11 +165,11 @@ Private Function JsonToIDriveItems(ByVal json As String, ByRef Parent As IDriveI
     Exit Function
     
 ErrHandler:
-    err.Raise err.Number, err.Source & ";" & Self, err.Description
+    Err.Raise Err.Number, Err.Source & ";" & Self, Err.Description
     
 End Function
 
-Private Function IDriveItemFromDictionary(ByRef dict As Scripting.Dictionary, ByRef Parent As IDriveItem) As IDriveItem
+Private Function IDriveItemFromDictionary(ByRef dict As Scripting.Dictionary, ByRef parent As IDriveItem) As IDriveItem
     
     On Error GoTo ErrHandler
     Dim Self As String
@@ -176,12 +178,12 @@ Private Function IDriveItemFromDictionary(ByRef dict As Scripting.Dictionary, By
     If Not dict Is Nothing Then
         If dict.Exists("folder") Then
             Dim fld As IFolder
-            Set fld = folderFactory.NewFolderFromDictionary(dict, Parent, Me)
+            Set fld = folderFactory.NewFolderFromDictionary(dict, parent, Me)
             Set IDriveItemFromDictionary = fld
             
         ElseIf dict.Exists("file") Then
             Dim fle As IFile
-            Set fle = fileFactory.NewFileFromDictionary(dict, Parent)
+            Set fle = fileFactory.NewFileFromDictionary(dict, parent)
             Set IDriveItemFromDictionary = fle
             
         Else
@@ -190,14 +192,14 @@ Private Function IDriveItemFromDictionary(ByRef dict As Scripting.Dictionary, By
         
         End If
     Else
-        err.Raise ErrorCodes.BadIDriveItemDictionary, Self, "Dictionary cannot be nothing"
+        Err.Raise ErrorCodes.BadIDriveItemDictionary, Self, "Dictionary cannot be nothing"
         
     End If
     
     Exit Function
     
 ErrHandler:
-    err.Raise err.Number, err.Source & ";" & Self, err.Description
+    Err.Raise Err.Number, Err.Source & ";" & Self, Err.Description
     
 End Function
 
@@ -207,5 +209,5 @@ Private Function TryParseJson(ByVal json As String, ByRef obj As Object) As Bool
     TryParseJson = True
     Exit Function
 ErrHandler:
-    err.Clear
+    Err.Clear
 End Function
