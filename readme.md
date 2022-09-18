@@ -6,7 +6,7 @@ A very simple VBA OneDrive explorer. It lets you navigate through files and fold
 
 ## Important
 
-In order this to work you have to set Files.Read permissions for Microsoft Graph, please see [How to set Microsoft Graph permissions](## How to set Microsoft Graph permissions).
+In order this to work you have to set Files.Read permissions for Microsoft Graph, please see [How to set Microsoft Graph permissions](#how-to-set-microsoft-graph-permissions).
 
 ## Installation
 
@@ -59,7 +59,7 @@ End Sub
 OneDriveFileExplorer.Display arguments:
 
 - entryPointPath - path to root OneDrive folder
-- token - Microsoft Graph token (see [How to obtain Microsoft Graph token](## How to obtain Microsoft Graph token))
+- token - Microsoft Graph token (see [How to obtain Microsoft Graph token](#how-to-obtain-microsoft-graph-token))
 - userformTitle - title with which the form will be displayed
 - allowMultiselect - whether selecting multiple items is allowed or not
 - selectMode - if ESelectModeAll then you can select files and folder, if ESelectModeFolder then only folders, if ESelectModeFile then only files
@@ -126,4 +126,4 @@ Alternativately go to [Graph Explorer](https://developer.microsoft.com/en-us/gra
 ## Known issues
 
 ### Error: Unauthorized
-Token is expired or invalid, get new token to fix this issue.
+Token is expired or invalid get new token to fix this issue.
