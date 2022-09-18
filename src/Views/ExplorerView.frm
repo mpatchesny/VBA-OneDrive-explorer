@@ -110,7 +110,7 @@ Private Sub UpdateView()
     widths = GetListboxColumnsWidth(data)
     widths(0) = 0 ' hide ID column
     ListBox.ColumnWidths = Join(widths, ";")
-    PathTextBox.text = Model.currentItem.path
+    If Not Model.currentItem Is Nothing Then PathTextBox.text = Model.currentItem.path
 End Sub
 
 Private Sub RefreshView()
@@ -135,7 +135,7 @@ Private Sub RefreshView()
     Exit Sub
     
 ErrHandler:
-    MsgBox "Error!" & vbCrLf & "Error description: " & err.Description & vbCrLf & "Error source: " & err.Source, vbExclamation, "Error!"
+    MsgBox "Error!" & vbCrLf & "Error description: " & Err.Description & vbCrLf & "Error source: " & Err.Source, vbExclamation, "Error!"
 End Sub
 
 Private Sub ChangeFolder()
@@ -225,10 +225,12 @@ Private Function FilterSelectedItems(ByRef col As Collection, ByVal mode As ESel
 End Function
 
 Private Function GetItemFromId(ByVal Id As String) As IDriveItem
-    If Not Model.currentItem.Parent Is Nothing Then
-        If Id = Model.currentItem.Parent.Id Then
-            Set GetItemFromId = Model.currentItem.Parent
-            Exit Function
+    If Not Model.currentItem Is Nothing Then
+        If Not Model.currentItem.parent Is Nothing Then
+            If Id = Model.currentItem.parent.Id Then
+                Set GetItemFromId = Model.currentItem.parent
+                Exit Function
+            End If
         End If
     End If
     
@@ -256,11 +258,13 @@ Private Function IDriveItemCollectionToVariantArray() As Variant
 
         Dim i As Long
         i = 1
-        If Not Model.currentItem.Parent Is Nothing Then
-            ReDim arr(arrItemsCount + 1, 3)
-            arr(1, 0) = Model.currentItem.Parent.Id
-            arr(1, 1) = ".."
-            i = 2
+        If Not Model.currentItem Is Nothing Then
+            If Not Model.currentItem.parent Is Nothing Then
+                ReDim arr(arrItemsCount + 1, 3)
+                arr(1, 0) = Model.currentItem.parent.Id
+                arr(1, 1) = ".."
+                i = 2
+            End If
         End If
         
         arr(0, 0) = "id"
@@ -303,7 +307,7 @@ Private Function IDriveItemCollectionToVariantArray() As Variant
     Exit Function
     
 ErrHandler:
-    err.Raise err.Number, err.Source & ";" & Self, err.Description
+    Err.Raise Err.Number, Err.Source & ";" & Self, Err.Description
     
 End Function
 
