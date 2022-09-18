@@ -126,4 +126,4 @@ Alternativately go to [Graph Explorer](https://developer.microsoft.com/en-us/gra
 ## Known issues
 
 ### Error: Unauthorized
-Token is expired or invalid get new token to fix this issue.
+Token is expired or invalid or user has insufficient permissions (see: [How to set Microsoft Graph permissions](#how-to-set-microsoft-graph-permissions)).
