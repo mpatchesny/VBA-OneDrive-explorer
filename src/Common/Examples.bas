@@ -49,7 +49,7 @@ Public Sub ExampleGetToken()
     Exit Sub
     
 ErrHandler:
-    MsgBox "Error!" & vbCrLf & vbCrLf & "Error description: " & err.Description & vbCrLf & "Error source: " & err.Source, vbExclamation, "Error!"
+    MsgBox "Error!" & vbCrLf & vbCrLf & "Error description: " & Err.Description & vbCrLf & "Error source: " & Err.Source, vbExclamation, "Error!"
 
 End Sub
 
@@ -67,13 +67,15 @@ Public Sub ExampleTokenPrompt()
         .Show
         If .OK Then
             Token = .TokenTextBox.value
+        Else
+            Token = vbNullString
         End If
     End With
 
     Exit Sub
     
 ErrHandler:
-    MsgBox "Error!" & vbCrLf & vbCrLf & "Error description: " & err.Description & vbCrLf & "Error source: " & err.Source, vbExclamation, "Error!"
+    MsgBox "Error!" & vbCrLf & vbCrLf & "Error description: " & Err.Description & vbCrLf & "Error source: " & Err.Source, vbExclamation, "Error!"
 
 End Sub
 
@@ -85,12 +87,65 @@ Public Sub ExampleOneDriveExplorer()
     Dim Self As String
     Self = "ExampleOneDriveExplorer"
     
-    'ExampleTokenPrompt
-    ExampleGetToken
+    ' Choose one
+    ExampleTokenPrompt
+'    ExampleGetToken
+
     If Len(Token) = 0 Then Exit Sub
     
     Dim entryPointPath As String
     entryPointPath = "https://graph.microsoft.com/v1.0/me/drive/root/"
+
+    Dim explorer As OneDriveFileExplorer
+    Set explorer = New OneDriveFileExplorer
+    explorer.Display entryPointPath:=entryPointPath, Token:=Token, userFormTitle:="Select file", allowMultiselect:=False, selectMode:=ESelectModeFilesOnly
+
+    If Not explorer.IsCancelled Then
+        ' Printing selected items' id, path
+        If Not explorer.SelectedItems Is Nothing Then
+            If explorer.SelectedItems.Count <> 0 Then
+                Dim item As IDriveItem
+                For Each item In explorer.SelectedItems
+                    Debug.Print item.Id, item.path
+                Next item
+                
+                Dim odFile As OneDriveFile
+                Set odFile = explorer.SelectedItems(1)
+                ExampleDownloadFile odFile
+            End If
+        End If
+    End If
+
+    Exit Sub
+    
+ErrHandler:
+    Select Case Err.Number
+    Case ErrorCodes.Unauthorized
+        ' invalid or expired token or insufficent permissions
+        
+    Case Else
+        MsgBox "Error!" & vbCrLf & vbCrLf & "Error description: " & Err.Description & vbCrLf & "Error source: " & Err.Source, vbExclamation, "Error!"
+        
+    End Select
+
+End Sub
+
+Public Sub ExampleOneDriveExplorerSharedWithMe()
+
+    ' Example how to use VBA OneDrive Explorer
+
+    On Error GoTo ErrHandler
+    Dim Self As String
+    Self = "ExampleOneDriveExplorer"
+    
+    ' Choose one
+    ExampleTokenPrompt
+'    ExampleGetToken
+    
+    If Len(Token) = 0 Then Exit Sub
+    
+    Dim entryPointPath As String
+    entryPointPath = "https://graph.microsoft.com/v1.0/me/drive/SharedWithMe/"
 
     Dim explorer As OneDriveFileExplorer
     Set explorer = New OneDriveFileExplorer
@@ -113,12 +168,12 @@ Public Sub ExampleOneDriveExplorer()
     Exit Sub
     
 ErrHandler:
-    Select Case err.Number
+    Select Case Err.Number
     Case ErrorCodes.Unauthorized
-        ' invalid or expired token
+        ' invalid or expired token or insufficent permissions
         
     Case Else
-        MsgBox "Error!" & vbCrLf & vbCrLf & "Error description: " & err.Description & vbCrLf & "Error source: " & err.Source, vbExclamation, "Error!"
+        MsgBox "Error!" & vbCrLf & vbCrLf & "Error description: " & Err.Description & vbCrLf & "Error source: " & Err.Source, vbExclamation, "Error!"
         
     End Select
 
@@ -146,7 +201,7 @@ Public Sub ExampleDownloadFile(ByRef file As OneDriveFile)
     Exit Sub
     
 ErrHandler:
-    MsgBox "Error!" & vbCrLf & vbCrLf & "Error description: " & err.Description & vbCrLf & "Error source: " & err.Source, vbExclamation, "Error!"
+    MsgBox "Error!" & vbCrLf & vbCrLf & "Error description: " & Err.Description & vbCrLf & "Error source: " & Err.Source, vbExclamation, "Error!"
     
 End Sub
 
@@ -166,6 +221,6 @@ Private Sub WriteBinaryFile(ByVal path As String, ByVal varByteArray As Variant)
     
 ErrHandler:
     stream.Close
-    err.Raise err.Number, err.Source & "FileIO.WriteBinaryFile", err.Description
+    Err.Raise Err.Number, Err.Source & "FileIO.WriteBinaryFile", Err.Description
 
 End Sub
