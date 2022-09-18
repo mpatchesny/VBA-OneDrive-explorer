@@ -58,7 +58,7 @@ Public Function GetItemById(ByVal Id As String, ByVal DriveId As String) As Stri
     Exit Function
     
 ErrHandler:
-    err.Raise err.Number, err.Source & ";" & Self, err.Description
+    Err.Raise Err.Number, Err.Source & ";" & Self, Err.Description
 
 End Function
 Private Function IApi_GetItemById(ByVal Id As String, ByVal DriveId As String) As String
@@ -72,52 +72,32 @@ Public Function GetItemByPath(ByVal path As String) As String
     Self = TypeName(Me) & ".GetItemByPath"
     
     Dim query As String
-    If path Like "*/drive/sharedWithMe*" Then
-        Dim childrenDict As Scripting.Dictionary
-        Set childrenDict = New Scripting.Dictionary
-        childrenDict.Add "childCount", 0
-    
-        Dim dict As Scripting.Dictionary
-        Set dict = New Scripting.Dictionary
-        dict.Add "createdDateTime", Now
-        dict.Add "lastModifiedDateTime", Now
-        dict.Add "name", "Shared with me"
-        dict.Add "webUrl", path
-        dict.Add "folder", childrenDict
-        
-        Dim json As String
-        json = JsonConverter.ConvertToJson(dict)
-        GetItemByPath = json
-        
-    Else
-        query = path
-        ExecuteQuery (query)
-        GetItemByPath = thisResponse.responseText
-        
-    End If
+    query = path
+    ExecuteQuery (query)
+    GetItemByPath = thisResponse.responseText
     
     Exit Function
     
 ErrHandler:
-    err.Raise err.Number, err.Source & ";" & Self, err.Description
+    Err.Raise Err.Number, Err.Source & ";" & Self, Err.Description
 
 End Function
 Private Function IApi_GetItemByPath(ByVal path As String) As String
     IApi_GetItemByPath = GetItemByPath(path)
 End Function
 
-Public Function GetItems(ByRef Parent As IDriveItem) As String
+Public Function GetItems(ByRef parent As IDriveItem) As String
         
     On Error GoTo ErrHandler
     Dim Self As String
     Self = TypeName(Me) & ".GetItems"
     
     Dim query As String
-    If Parent.path Like "*/drive/sharedWithMe*" Then
-        query = Parent.path
+    If LCase(parent.path) Like "*/drive/sharedwithme*" Then
+        query = parent.path
         
     Else
-        query = GetQueryChildren(Parent.Id, Parent.DriveId)
+        query = GetQueryChildren(parent.Id, parent.DriveId)
         
     End If
     
@@ -127,18 +107,18 @@ Public Function GetItems(ByRef Parent As IDriveItem) As String
     Exit Function
     
 ErrHandler:
-    err.Raise err.Number, err.Source & ";" & Self, err.Description
+    Err.Raise Err.Number, Err.Source & ";" & Self, Err.Description
     
 End Function
-Private Function IApi_GetItems(ByRef Parent As IDriveItem) As String
-    IApi_GetItems = GetItems(Parent)
+Private Function IApi_GetItems(ByRef parent As IDriveItem) As String
+    IApi_GetItems = GetItems(parent)
 End Function
 
 Private Function ExecuteQuery(ByVal query As String) As String
         
     On Error GoTo ErrHandler
     Dim Self As String
-    Self = TypeName(Me) & ".GetItems"
+    Self = TypeName(Me) & ".ExecuteQuery"
     
     Dim req As WinHttpRequest
     Set req = GetRequest(Token, query)
@@ -158,42 +138,8 @@ Private Function ExecuteQuery(ByVal query As String) As String
     Exit Function
     
 ErrHandler:
-    err.Raise err.Number, err.Source & ";" & Self, err.Description
+    Err.Raise Err.Number, Err.Source & ";" & Self, Err.Description
     
-End Function
-
-Public Function GetRootFolderItems() As String
-        
-    On Error GoTo ErrHandler
-    Dim Self As String
-    Self = TypeName(Me) & ".GetRootFolderItems"
-    
-    Dim query As String
-    query = "https://graph.microsoft.com/v1.0/me/drive/root/children"
-    ExecuteQuery (query)
-    GetRootFolderItems = thisResponse.responseText
-    Exit Function
-    
-ErrHandler:
-    err.Raise err.Number, err.Source & ";" & Self, err.Description
-   
-End Function
-
-Public Function GetSharedItems() As String
-        
-    On Error GoTo ErrHandler
-    Dim Self As String
-    Self = TypeName(Me) & ".GetSharedItems"
-    
-    Dim query As String
-    query = "https://graph.microsoft.com/v1.0/me/drive/sharedWithMe"
-    ExecuteQuery (query)
-    GetSharedItems = thisResponse.responseText
-    Exit Function
-    
-ErrHandler:
-    err.Raise err.Number, err.Source & ";" & Self, err.Description
-   
 End Function
 
 Private Function GetRequest(ByVal cToken As String, ByVal cUrl As String) As WinHttpRequest
@@ -225,7 +171,7 @@ Private Function ExecuteRequest(ByRef req As WinHttpRequest) As TResponse
     Exit Function
     
 ErrHandler:
-    err.Raise err.Number, err.Source & ";" & Self, err.Description
+    Err.Raise Err.Number, Err.Source & ";" & Self, Err.Description
     
 End Function
 
@@ -252,31 +198,31 @@ Private Sub RaiseBadResponseError(ByVal resStatus As Long, ByVal responseText As
 
     Select Case resStatus
     Case 400
-        err.Raise ErrorCodes.BadRequest, methodName, "Bad request (" & responseText & ")"
+        Err.Raise ErrorCodes.BadRequest, methodName, "Bad request (" & responseText & ")"
         
     Case 401
-        err.Raise ErrorCodes.Unauthorized, methodName, "Unauthorized (" & responseText & ")"
+        Err.Raise ErrorCodes.Unauthorized, methodName, "Unauthorized (" & responseText & ")"
         
     Case 403
-        err.Raise ErrorCodes.Forbidden, methodName, "Forbidden (" & responseText & ")"
+        Err.Raise ErrorCodes.Forbidden, methodName, "Forbidden (" & responseText & ")"
         
     Case 404
-        err.Raise ErrorCodes.NotFound, methodName, "Not found (" & responseText & ")"
+        Err.Raise ErrorCodes.NotFound, methodName, "Not found (" & responseText & ")"
         
     Case 405
-        err.Raise ErrorCodes.MethodNotAllowed, methodName, "Method not allowed (" & responseText & ")"
+        Err.Raise ErrorCodes.MethodNotAllowed, methodName, "Method not allowed (" & responseText & ")"
         
     Case 406
-        err.Raise ErrorCodes.NotAcceptable, methodName, "Not acceptable (" & responseText & ")"
+        Err.Raise ErrorCodes.NotAcceptable, methodName, "Not acceptable (" & responseText & ")"
         
     Case 412
-        err.Raise ErrorCodes.PreconditionFailed, methodName, "Precondition failed (" & responseText & ")"
+        Err.Raise ErrorCodes.PreconditionFailed, methodName, "Precondition failed (" & responseText & ")"
     
     Case 500
-        err.Raise ErrorCodes.InternalServerError, methodName, "Internal server error (" & responseText & ")"
+        Err.Raise ErrorCodes.InternalServerError, methodName, "Internal server error (" & responseText & ")"
     
     Case Else
-        err.Raise ErrorCodes.BadResponse, methodName, "Bad response status " & resStatus & " (" & responseText & ")"
+        Err.Raise ErrorCodes.BadResponse, methodName, "Bad response status " & resStatus & " (" & responseText & ")"
         
     End Select
 
